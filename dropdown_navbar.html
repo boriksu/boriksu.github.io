@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="utf-8" />
+        <title>Demo!</title>
+        <link rel="icon" type="image/x-icon" href="01_Logo_HSE_full_rus_CMYK.svg">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+        <link
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+        rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style_1.css" type="text/css">
+        <!-- <style>
+    body {
+    font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar {
+    overflow: hidden;
+    background-color: #333;
+    }
+
+    .navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    }
+
+    .dropdown {
+    float: left;
+    overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+    font-size: 16px;  
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    }
+
+    .navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+    }
+
+    .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    }
+
+    .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    }
+
+    .dropdown-content a:hover {
+    background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+    display: block;
+    }
+    </style> -->
+    </head>
+    <body>
+
+        <div class="navbar">
+            <div class="dropdown-1">
+                <button class="dropbtn-1">
+                    <a href="#" class="tablinks" onclick="openCity(event, 'Paris')" id="defaultOpen">Common</a>
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Admission 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Абитуриенты</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Зачисленные</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Соотношение</a>
+                </div>
+            </div>
+            <div class="dropdown">
+            <button class="dropbtn">Economics
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
+            <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+            <a href="#" class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</a>
+            </div>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="dropbtn">Политические показатели 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+                </div>
+            </div> 
+            <div class="dropdown">
+                <button class="dropbtn">Центр взаимодействия с регионами 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+                </div>
+            </div> 
+            <div class="dropdown">
+                <button class="dropbtn">Другое 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+                </div>
+            </div>  -->
+        </div>
+
+        <div id="London" class="tabcontent">
+            <h3>London</h3>
+            <p>London is the capital city of England.</p>
+        </div>
+        
+        <div id="Paris" class="tabcontent">
+            <h3>Paris</h3>
+            <p>Paris is the capital of France.</p>
+            <img src="images.jpeg" />
+        </div>
+        
+        <div id="Tokyo" class="tabcontent">
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p> 
+
+            <div id="map"></div>
+            <!-- <div class="map-overlay" id="features">
+            <h2>US population density</h2>
+            <div id="pd"><p>Hover over a state!</p></div>
+            </div>
+            <div class="map-overlay" id="legend"></div> -->
+            <script>
+            // define access token
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+
+            // create map
+            const map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio
+                
+            });
+            
+            map.on('load', () => {
+                // make a pointer cursor
+                map.getCanvas().style.cursor = 'default';
+            });
+
+            </script>
+
+        </div>
+
+        <script> // switching between tabs
+        function openCity(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("London").style.display = "none";
+        document.getElementById("Paris").style.display = "none";
+        document.getElementById("Tokyo").style.display = "none";
+
+        document.getElementById("defaultOpen").click();
+
+        </script>
+
+    </body>
+</html>
