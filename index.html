@@ -12,91 +12,26 @@
         rel="stylesheet"
         />
         <link rel="stylesheet" href="style_1.css" type="text/css">
-        <!-- <style>
-    body {
-    font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .navbar {
-    overflow: hidden;
-    background-color: #333;
-    }
-
-    .navbar a {
-    float: left;
-    font-size: 16px;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    }
-
-    .dropdown {
-    float: left;
-    overflow: hidden;
-    }
-
-    .dropdown .dropbtn {
-    font-size: 16px;  
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 0;
-    }
-
-    .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
-    }
-
-    .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    }
-
-    .dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-    }
-
-    .dropdown-content a:hover {
-    background-color: #ddd;
-    }
-
-    .dropdown:hover .dropdown-content {
-    display: block;
-    }
-    </style> -->
     </head>
     <body>
 
         <div class="navbar">
             <div class="dropdown-1">
                 <button class="dropbtn-1">
-                    <a href="#" class="tablinks" onclick="openCity(event, 'Paris')" id="defaultOpen">Common</a>
+                    <a href="#" class="tablinks" onclick="openCity(event, 'common')" id="defaultOpen">Общий вид</a>
                 </button>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Admission 
+                <button class="dropbtn">Поступление 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Абитуриенты</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Зачисленные</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">Соотношение</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'abitur')">Абитуриенты</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'stud')">Зачисленные</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a>
                 </div>
             </div>
-            <div class="dropdown">
+            <!-- <div class="dropdown">
             <button class="dropbtn">Economics
             <i class="fa fa-caret-down"></i>
             </button>
@@ -105,7 +40,7 @@
             <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
             <a href="#" class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</a>
             </div>
-            </div>
+            </div> -->
             <!-- <div class="dropdown">
                 <button class="dropbtn">Политические показатели 
                 <i class="fa fa-caret-down"></i>
@@ -134,26 +69,15 @@
                 </div>
             </div>  -->
         </div>
-
-        <div id="London" class="tabcontent">
-            <h3>London</h3>
-            <p>London is the capital city of England.</p>
-        </div>
         
-        <div id="Paris" class="tabcontent">
-            <h3>Paris</h3>
-            <p>Paris is the capital of France.</p>
-            <img src="images.jpeg" />
-        </div>
-        
-        <div id="Tokyo" class="tabcontent">
+        <div id="abitur" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
 
             <div id="map"></div>
             <div class="map-overlay" id="features">
-            <h2>US population density</h2>
-            <div id="pd"><p>Hover over a state!</p></div>
+            <h2>Абитуриенты НИУ ВШЭ Москва</h2>
+            <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
             <!-- <div class="map-overlay" id="legend"></div> -->
             <script>
@@ -163,30 +87,12 @@
             // create map
             const map = new mapboxgl.Map({
                 container: 'map', // container id
-                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio
-                
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1    
             });
             
             map.on('load', () => {
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
-
-                //         // create legend
-                // const legend = document.getElementById('legend');
-
-                // layers.forEach((layer, i) => {
-                // const color = colors[i];
-                // const item = document.createElement('div');
-                // const key = document.createElement('span');
-                // key.className = 'legend-key';
-                // key.style.backgroundColor = color;
-
-                // const value = document.createElement('span');
-                // value.innerHTML = `${layer}`;
-                // item.appendChild(key);
-                // item.appendChild(value);
-                // legend.appendChild(item);
-                // });
 
                 // change info window on hover
                 map.on('mousemove', (event) => {
@@ -194,15 +100,61 @@
                     layers: ['abitur']
                 });
                 document.getElementById('pd').innerHTML = states.length
-                    ? `<h3>${states[0].properties.name_ru}</h3><p><strong><em>${states[0].properties.abitur}</strong> people per square mile</em></p>`
-                    : `<p>Hover over a state!</p>`;
+                    ? `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
                 });
-
-                
             });
 
             </script>
 
+        </div>
+        <div id="stud" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <h2>Before</h2>
+            <div id="check"></div>
+            <h2>After</h2>
+            <!-- <div class="map-overlay" id="features_p">
+            <h2>Зачисленние НИУ ВШЭ Москва</h2>
+            <div id="pd"><p>Наведите курсор на регион</p></div>
+            </div> -->
+            <!-- <div class="map-overlay" id="legend"></div> -->
+            <script>
+            // define access token
+            // mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+
+            // create map
+            const map_p = new mapboxgl.Map({
+                container: 'check', // container id
+                style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2  
+            });
+            
+            // map_p.on('load', () => {
+            //     // make a pointer cursor
+            //     map_p.getCanvas().style.cursor = 'default';
+
+            //     // change info window on hover
+            //     map_p.on('mousemove', (event) => {
+            //     const states_p = map_p.queryRenderedFeatures(event.point, {
+            //         layers: ['stud']
+            //     });
+            //     document.getElementById('pd').innerHTML = states_p.length
+            //         ? `<h3>${states_p[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_p[0].properties.stud}</strong></em></p>`
+            //         : `<p>Наведите курсор на регион</p>`;
+            //     });
+            // });
+
+            </script>
+
+        </div>
+        <div id="test" class="tabcontent">
+            <h3>Paris</h3>
+            <p>Paris is the capital of France.</p>
+            <img src="images.jpeg" />
+        </div>
+        <div id="common" class="tabcontent">
+            <h3>Common view</h3>
+            <p>Common view</p>
         </div>
 
         <script> // switching between tabs
@@ -220,9 +172,9 @@
             evt.currentTarget.className += " active";
         }
         // Get the element with id="defaultOpen" and click on it
-        document.getElementById("London").style.display = "none";
-        document.getElementById("Paris").style.display = "none";
-        document.getElementById("Tokyo").style.display = "none";
+        document.getElementById("abitur").style.display = "none";
+        document.getElementById("stud").style.display = "none";
+        document.getElementById("test").style.display = "none";
 
         document.getElementById("defaultOpen").click();
 
