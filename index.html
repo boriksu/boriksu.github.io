@@ -147,15 +147,15 @@
         </div>
         
         <div id="Tokyo" class="tabcontent">
-            <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p> 
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
 
             <div id="map"></div>
-            <!-- <div class="map-overlay" id="features">
+            <div class="map-overlay" id="features">
             <h2>US population density</h2>
             <div id="pd"><p>Hover over a state!</p></div>
             </div>
-            <div class="map-overlay" id="legend"></div> -->
+            <!-- <div class="map-overlay" id="legend"></div> -->
             <script>
             // define access token
             mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
@@ -170,6 +170,35 @@
             map.on('load', () => {
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
+
+                //         // create legend
+                // const legend = document.getElementById('legend');
+
+                // layers.forEach((layer, i) => {
+                // const color = colors[i];
+                // const item = document.createElement('div');
+                // const key = document.createElement('span');
+                // key.className = 'legend-key';
+                // key.style.backgroundColor = color;
+
+                // const value = document.createElement('span');
+                // value.innerHTML = `${layer}`;
+                // item.appendChild(key);
+                // item.appendChild(value);
+                // legend.appendChild(item);
+                // });
+
+                // change info window on hover
+                map.on('mousemove', (event) => {
+                const states = map.queryRenderedFeatures(event.point, {
+                    layers: ['abitur']
+                });
+                document.getElementById('pd').innerHTML = states.length
+                    ? `<h3>${states[0].properties.name_ru}</h3><p><strong><em>${states[0].properties.abitur}</strong> people per square mile</em></p>`
+                    : `<p>Hover over a state!</p>`;
+                });
+
+                
             });
 
             </script>
