@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Access-Control-Allow-Origin" content="*">pythin2z
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="utf-8" />
         <title>Demo!</title>
@@ -164,41 +163,13 @@
             // create map
             const map = new mapboxgl.Map({
                 container: 'map', // container id
-                style: 'mapbox://styles/boriksu/cldmuw5y2000d01qvwqz09und', // map style URL from Mapbox Studio
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio
                 
             });
             
             map.on('load', () => {
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
-
-                // map.addSource('regions-1', {
-                //     type: 'geojson',
-                //     url: 'data-all.json'
-                //     });
-                map.addLayer({
-                    'id': 'reg',
-                    'type': 'fill',
-                    'source':{
-                        type: 'geojson',
-                        data: 'data-all.json'
-                        // data: 'https://studio.mapbox.com/tilesets/boriksu.4hrnujwt'
-                    },
-                    'layout': {
-                    // Make the layer visible by default.
-                        'visibility': 'visible'
-                        // 'fill-color': 8
-                    },
-                    // 'fill-color': 8
-                    'paint': {
-                    'fill-color': '#ffffff'
-                    // 'circle-color': '#ffffcc'
-                    }
-                    // 'source-layer': 'museum-cusco'
-                });
-                    
-
-
             });
 
             </script>
