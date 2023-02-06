@@ -44,6 +44,16 @@ p {
   width: 50%;
   /* display: block; */
 }
+
+#check_i {
+  position: absolute;
+  top: 150px;
+  bottom: 150px;
+  left: 50px;
+  right: 50px;
+  width: 50%;
+  /* display: block; */
+}
 /* #features {
   top: 0;
   height: 100px;

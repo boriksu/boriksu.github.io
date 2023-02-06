@@ -31,16 +31,14 @@
                 <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a>
                 </div>
             </div>
-            <!-- <div class="dropdown">
-            <button class="dropbtn">Economics
+            <div class="dropdown">
+            <button class="dropbtn">Экономика
             <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-            <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
-            <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
-            <a href="#" class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</a>
+            <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
             </div>
-            </div> -->
+            </div>
             <!-- <div class="dropdown">
                 <button class="dropbtn">Политические показатели 
                 <i class="fa fa-caret-down"></i>
@@ -111,42 +109,73 @@
         <div id="stud" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
-            <h2>Before</h2>
+            <div class="map-overlay" id="features">
+            <h2>Зачисленные студенты НИУ ВШЭ Москва</h2>
+            <div id="pds"><p>Наведите курсор на регион</p></div>
+            </div>
             <div id="check"></div>
-            <h2>After</h2>
-            <!-- <div class="map-overlay" id="features_p">
-            <h2>Зачисленние НИУ ВШЭ Москва</h2>
-            <div id="pd"><p>Наведите курсор на регион</p></div>
-            </div> -->
-            <!-- <div class="map-overlay" id="legend"></div> -->
-            <script>
-            // define access token
-            // mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
 
-            // create map
+            <script>
+
             const map_p = new mapboxgl.Map({
                 container: 'check', // container id
                 style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2  
             });
             
-            // map_p.on('load', () => {
-            //     // make a pointer cursor
-            //     map_p.getCanvas().style.cursor = 'default';
+            map_p.on('load', () => {
+                // make a pointer cursor
+                map_p.getCanvas().style.cursor = 'default';
 
-            //     // change info window on hover
-            //     map_p.on('mousemove', (event) => {
-            //     const states_p = map_p.queryRenderedFeatures(event.point, {
-            //         layers: ['stud']
-            //     });
-            //     document.getElementById('pd').innerHTML = states_p.length
-            //         ? `<h3>${states_p[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_p[0].properties.stud}</strong></em></p>`
-            //         : `<p>Наведите курсор на регион</p>`;
-            //     });
-            // });
+                // change info window on hover
+                map_p.on('mousemove', (event) => {
+                const states_p = map_p.queryRenderedFeatures(event.point, {
+                    layers: ['stud']
+                });
+                document.getElementById('pds').innerHTML = states_p.length
+                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_p[0].properties.stud}</strong></em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
+                });
+            });
 
             </script>
 
         </div>
+
+        <div id="income" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <div class="map-overlay" id="features">
+            <h2>Среднедушевые денежные доходы населения по субъектам Российской федерации за 2021 год</h2>
+            <div id="pdr"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_i"></div>
+
+            <script>
+
+            const map_i = new mapboxgl.Map({
+                container: 'check_i', // container id
+                style: 'mapbox://styles/boriksu/cldstcajh000w01ta3su6zf44', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_i.on('load', () => {
+                // make a pointer cursor
+                map_i.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_i.on('mousemove', (event) => {
+                const states_i = map_i.queryRenderedFeatures(event.point, {
+                    layers: ['income']
+                });
+                document.getElementById('pdr').innerHTML = states_i.length
+                    ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${states_i[0].properties.income}</strong> руб./месяц</em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
+                });
+            });
+
+            </script>
+
+        </div>
+
         <div id="test" class="tabcontent">
             <h3>Paris</h3>
             <p>Paris is the capital of France.</p>
