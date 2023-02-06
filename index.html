@@ -32,12 +32,12 @@
                 </div>
             </div>
             <div class="dropdown">
-            <button class="dropbtn">Экономика
-            <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-            <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
-            </div>
+                <button class="dropbtn">Экономика
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
+                </div>
             </div>
             <!-- <div class="dropdown">
                 <button class="dropbtn">Политические показатели 
@@ -47,17 +47,17 @@
                 <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
                 </div>
-            </div> 
+            </div>  -->
             <div class="dropdown">
                 <button class="dropbtn">Центр взаимодействия с регионами 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Школы</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
                 </div>
             </div> 
-            <div class="dropdown">
+            <!-- <div class="dropdown">
                 <button class="dropbtn">Другое 
                 <i class="fa fa-caret-down"></i>
                 </button>
@@ -168,6 +168,41 @@
                 });
                 document.getElementById('pdr').innerHTML = states_i.length
                     ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${states_i[0].properties.income}</strong> руб./месяц</em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
+                });
+            });
+
+            </script>
+
+        </div>
+
+        <div id="school" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <div class="map-overlay" id="features">
+            <h2>Соглашения НИУ ВШЭ со школами</h2>
+            <div id="pdh"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_s"></div>
+
+            <script>
+
+            const map_s = new mapboxgl.Map({
+                container: 'check_s', // container id
+                style: 'mapbox://styles/boriksu/cldstd82f002401pbltje4vmi', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_s.on('load', () => {
+                // make a pointer cursor
+                map_s.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_s.on('mousemove', (event) => {
+                const states_s = map_s.queryRenderedFeatures(event.point, {
+                    layers: ['total-school']
+                });
+                document.getElementById('pdh').innerHTML = states_s.length
+                    ? `<h3>${states_s[0].properties.name_ru}</h3><p><em> : <strong>${states_s[0].properties.total-school}</strong> руб./месяц</em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
             });
