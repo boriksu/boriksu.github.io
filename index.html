@@ -54,7 +54,7 @@
                 </button>
                 <div class="dropdown-content">
                 <a href="#" class="tablinks" onclick="openCity(event, 'school')">Школы</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
                 </div>
             </div> 
             <!-- <div class="dropdown">
@@ -202,9 +202,58 @@
                     layers: ['total_school']
                 });
                 document.getElementById('pdh').innerHTML = states_s.length
-                    ? `<h3>${states_s[0].properties.name_ru}</h3><p><em> : <strong>${states_s[0].properties.total_school}</strong></em></p>`
+                    ? `<h3>${states_s[0].properties.name_ru}</h3><p><em>Базовые школы : <strong>${states_s[0].properties.base_school}</strong></em>
+                    <em>; Школы-партнеры : <strong>${states_s[0].properties.school_partner}</strong></em>
+                    <em>; Школы распределенного лицея : <strong>${states_s[0].properties.licey}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
-                // console.log(states_s[0].properties,states_s[0].properties.total-school);
+                // console.log(states_s[0].properties);
+                });
+            });
+
+            </script>
+
+        </div>
+
+
+        <div id="agree" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <div class="map-overlay" id="features">
+            <h2>Соглашение о взаимодействии с органом управления региона</h2>
+            <div id="pda"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_a"></div>
+
+            <script>
+
+            const map_a = new mapboxgl.Map({
+                container: 'check_a', // container id
+                style: 'mapbox://styles/boriksu/cldtyiq2200cd01t99mmzv8if', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_a.on('load', () => {
+                // make a pointer cursor
+                map_a.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_a.on('mousemove', (event) => {
+                const states_a = map_a.queryRenderedFeatures(event.point, {
+                    layers: ['agreement']
+                });
+                
+                if (states_a.length) {
+                    if (states_a[0].properties.agreement == "") {
+                        document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
+                    } else {
+                        document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+                    }
+                } else {
+                    document.getElementById('pda').innerHTML = `<p>Наведите курсор на регион</p>`
+                }
+                // document.getElementById('pda').innerHTML = states_a.length
+                //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
+                // console.log(states_s[0].properties);
                 });
             });
 

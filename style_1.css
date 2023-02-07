@@ -65,6 +65,16 @@ p {
   /* display: block; */
 }
 
+#check_a {
+  position: absolute;
+  top: 150px;
+  bottom: 150px;
+  left: 50px;
+  right: 50px;
+  width: 50%;
+  /* display: block; */
+}
+
 /* #features {
   top: 0;
   height: 100px;
