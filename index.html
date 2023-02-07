@@ -55,17 +55,17 @@
                 <div class="dropdown-content">
                 <a href="#" class="tablinks" onclick="openCity(event, 'school')">Школы</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
                 </div>
             </div> 
-            <!-- <div class="dropdown">
+            <div class="dropdown">
                 <button class="dropbtn">Другое 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'federal')">Фед. университет</a>
                 </div>
-            </div>  -->
+            </div> 
         </div>
         
         <div id="abitur" class="tabcontent">
@@ -214,7 +214,6 @@
 
         </div>
 
-
         <div id="agree" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
@@ -249,6 +248,98 @@
                     }
                 } else {
                     document.getElementById('pda').innerHTML = `<p>Наведите курсор на регион</p>`
+                }
+                // document.getElementById('pda').innerHTML = states_a.length
+                //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
+                // console.log(states_s[0].properties);
+                });
+            });
+
+            </script>
+
+        </div>
+
+        <div id="federal" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <div class="map-overlay" id="features">
+            <h2>Наличие федерального университета в регионе</h2>
+            <div id="pdf"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_f"></div>
+
+            <script>
+
+            const map_f = new mapboxgl.Map({
+                container: 'check_f', // container id
+                style: 'mapbox://styles/boriksu/cldsw0ujt001401n2mwqrd7lo', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_f.on('load', () => {
+                // make a pointer cursor
+                map_f.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_f.on('mousemove', (event) => {
+                const states_f = map_f.queryRenderedFeatures(event.point, {
+                    layers: ['federal']
+                });
+                
+                if (states_f.length) {
+                    if (states_f[0].properties.federal == "") {
+                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>Университет не найден</em></p>`
+                    } else {
+                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em><strong>${states_f[0].properties.federal}</strong></em></p>`
+                    }
+                } else {
+                    document.getElementById('pdf').innerHTML = `<p>Наведите курсор на регион</p>`
+                }
+                // document.getElementById('pda').innerHTML = states_a.length
+                //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
+                // console.log(states_s[0].properties);
+                });
+            });
+
+            </script>
+
+        </div>
+
+        <div id="event" class="tabcontent">
+            <!-- <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>  -->
+            <div class="map-overlay" id="features">
+            <h2>Выезды и мероприятия Центра по взаимодействию с регионами</h2>
+            <div id="pde"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_e"></div>
+
+            <script>
+
+            const map_e = new mapboxgl.Map({
+                container: 'check_e', // container id
+                style: 'mapbox://styles/boriksu/cldsw0ujt001401n2mwqrd7lo', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_e.on('load', () => {
+                // make a pointer cursor
+                map_e.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_e.on('mousemove', (event) => {
+                const states_e = map_e.queryRenderedFeatures(event.point, {
+                    layers: ['event']
+                });
+                
+                if (states_e.length) {
+                    if (states_e[0].properties.event_1== '0') {
+                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
+                    } else {
+                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em><strong>${states_e[0].properties.event}</strong></em></p>`
+                    }
+                } else {
+                    document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
                 }
                 // document.getElementById('pda').innerHTML = states_a.length
                 //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
