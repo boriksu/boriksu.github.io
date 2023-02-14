@@ -169,7 +169,7 @@
             <p>Tokyo is the capital of Japan.</p>  -->
             <div class="map-overlay" id="features">
             <h2>Среднедушевые денежные доходы населения по субъектам Российской федерации за 2021 год</h2>
-            <div id="pdr"><p>Наведите курсор на регион</p></div>
+            <div id="pdi"><p>Наведите курсор на регион</p></div>
             </div>
             <div id="check_i"></div>
 
@@ -189,7 +189,7 @@
                 const states_i = map_i.queryRenderedFeatures(event.point, {
                     layers: ['income']
                 });
-                document.getElementById('pdr').innerHTML = states_i.length
+                document.getElementById('pdi').innerHTML = states_i.length
                     ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${states_i[0].properties.income}</strong> руб./месяц</em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
