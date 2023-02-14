@@ -15,40 +15,34 @@
     </head>
     <body>
 
-        <div class="navbar">
-            <div class="dropdown-1">
+        <div class="navbar"> <!-- Верхняя панель меню -->
+            <div class="dropdown-1"> <!-- Общий вид -->
                 <button class="dropbtn-1">
                     <a href="#" class="tablinks" onclick="openCity(event, 'common')" id="defaultOpen">Общий вид</a>
                 </button>
             </div>
-            <div class="dropdown">
+            <div class="dropdown"> <!-- Поступление -->
                 <button class="dropbtn">Поступление 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
                 <a href="#" class="tablinks" onclick="openCity(event, 'abitur')">Абитуриенты</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'stud')">Зачисленные</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'ratio')">Соотношение</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a>
                 </div>
             </div>
-            <div class="dropdown">
-                <button class="dropbtn">Экономика
+            <div class="dropdown"> <!-- Демография и уровень жизни -->
+                <button class="dropbtn">Демография и уровень жизни
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'population')">Численность населения</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'social')">Социальный лифт</a>
                 </div>
             </div>
-            <!-- <div class="dropdown">
-                <button class="dropbtn">Политические показатели 
-                <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'London')">London</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'Paris')">Paris</a>
-                </div>
-            </div>  -->
-            <div class="dropdown">
+            <div class="dropdown"> <!-- Центр взаимодействия с регионами -->
                 <button class="dropbtn">Центр взаимодействия с регионами 
                 <i class="fa fa-caret-down"></i>
                 </button>
@@ -58,7 +52,7 @@
                 <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
                 </div>
             </div> 
-            <div class="dropdown">
+            <div class="dropdown"> <!-- Другое-->
                 <button class="dropbtn">Другое 
                 <i class="fa fa-caret-down"></i>
                 </button>
@@ -68,10 +62,7 @@
             </div> 
         </div>
         
-        <div id="abitur" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
-
+        <div id="abitur" class="tabcontent"> <!-- Абитуриенты -->
             <div id="map"></div>
             <div class="map-overlay" id="features">
             <h2>Абитуриенты НИУ ВШЭ Москва</h2>
@@ -117,22 +108,22 @@
 
             <script>
 
-            const map_p = new mapboxgl.Map({
+            const map_c = new mapboxgl.Map({
                 container: 'check', // container id
                 style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2  
             });
             
-            map_p.on('load', () => {
+            map_c.on('load', () => {
                 // make a pointer cursor
-                map_p.getCanvas().style.cursor = 'default';
+                map_c.getCanvas().style.cursor = 'default';
 
                 // change info window on hover
-                map_p.on('mousemove', (event) => {
-                const states_p = map_p.queryRenderedFeatures(event.point, {
+                map_c.on('mousemove', (event) => {
+                const states_c = map_c.queryRenderedFeatures(event.point, {
                     layers: ['stud']
                 });
-                document.getElementById('pds').innerHTML = states_p.length
-                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_p[0].properties.stud}</strong></em></p>`
+                document.getElementById('pds').innerHTML = states_c.length
+                    ? `<h3>${states_c[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_c[0].properties.stud}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
             });
@@ -140,7 +131,39 @@
             </script>
 
         </div>
+        <div id="ratio" class="tabcontent">
 
+            <div class="map-overlay" id="features">
+            <h2>Показатель соотношения числа абитуриентов к населению региона в возрасте 15-19 лет</h2>
+            <div id="pdr"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_r"></div>
+
+            <script>
+
+            const map_r = new mapboxgl.Map({
+                container: 'check_r', // container id
+                style: 'mapbox://styles/boriksu/cle4dz7jo001i01qmxj7xm045', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_r.on('load', () => {
+                // make a pointer cursor
+                map_r.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_r.on('mousemove', (event) => {
+                const states_r = map_r.queryRenderedFeatures(event.point, {
+                    layers: ['ratio']
+                });
+                document.getElementById('pdr').innerHTML = states_r.length
+                    ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${states_r[0].properties.ratio_abitur}</strong></em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
+                });
+            });
+
+            </script>
+
+        </div>
         <div id="income" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
@@ -175,7 +198,79 @@
             </script>
 
         </div>
+        <div id="population" class="tabcontent">
+            <div class="map-overlay" id="features">
+            <h2>Численность населения на 1 января 2022 года</h2>
+            <div id="pdp"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_p"></div>
 
+            <script>
+
+            const map_p = new mapboxgl.Map({
+                container: 'check_p', // container id
+                style: 'mapbox://styles/boriksu/cle4b07n8000e01oejisy6ojc', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_p.on('load', () => {
+                // make a pointer cursor
+                map_p.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_p.on('mousemove', (event) => {
+                const states_p = map_p.queryRenderedFeatures(event.point, {
+                    layers: ['population']
+                });
+                document.getElementById('pdp').innerHTML = states_p.length
+                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${states_p[0].properties.population}</strong> человек, из них <strong>${states_p[0].properties.teen}</strong> в возрасте 15-19 лет</em></p>`
+                    : `<p>Наведите курсор на регион</p>`;
+                });
+            });
+
+            </script>
+
+        </div>
+        <div id="social" class="tabcontent">
+            <div class="map-overlay" id="features">
+            <h2>Зачисленные по льготе "Социальный лифт"</h2>
+            <div id="pdso"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_so"></div>
+
+            <script>
+
+            const map_so = new mapboxgl.Map({
+                container: 'check_so', // container id
+                style: 'mapbox://styles/boriksu/cle4b7oi4005w01ogbbo2bimb', // map style URL from Mapbox Studio - test2  
+            });
+            
+            map_so.on('load', () => {
+                // make a pointer cursor
+                map_so.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_so.on('mousemove', (event) => {
+                const states_so = map_so.queryRenderedFeatures(event.point, {
+                    layers: ['social']
+                });
+
+                if (states_so.length) {
+                    if (states_so[0].properties.social_lift_total == 0) {
+                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
+                    } else {
+                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе</em></p>
+                        <p><em>в рамках основного конкурса : <strong>${states_so[0].properties.social_lift}</strong></em></p>
+                        <p><em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states_so[0].properties.social_lift_veteran}</strong></em></p>`
+                    }
+                } else {
+                    document.getElementById('pdso').innerHTML = `<p>Наведите курсор на регион</p>`
+                }
+                });
+            });
+
+            </script>
+
+        </div>
         <div id="school" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
@@ -213,7 +308,6 @@
             </script>
 
         </div>
-
         <div id="agree" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
@@ -237,11 +331,11 @@
                 // change info window on hover
                 map_a.on('mousemove', (event) => {
                 const states_a = map_a.queryRenderedFeatures(event.point, {
-                    layers: ['agreement']
+                    layers: ['agreement2']
                 });
                 
                 if (states_a.length) {
-                    if (states_a[0].properties.agreement == "") {
+                    if (states_a[0].properties.agreement_1 == 0) {
                         document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
                     } else {
                         document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
@@ -259,7 +353,6 @@
             </script>
 
         </div>
-
         <div id="federal" class="tabcontent">
             <!-- <h3>Tokyo</h3>
             <p>Tokyo is the capital of Japan.</p>  -->
@@ -288,7 +381,7 @@
                 
                 if (states_f.length) {
                     if (states_f[0].properties.federal == "") {
-                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>Университет не найден</em></p>`
+                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>В регионе нет федерального университета</em></p>`
                     } else {
                         document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em><strong>${states_f[0].properties.federal}</strong></em></p>`
                     }
@@ -305,10 +398,7 @@
             </script>
 
         </div>
-
         <div id="event" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
             <div class="map-overlay" id="features">
             <h2>Выезды и мероприятия Центра по взаимодействию с регионами</h2>
             <div id="pde"><p>Наведите курсор на регион</p></div>
@@ -341,17 +431,12 @@
                 } else {
                     document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
                 }
-                // document.getElementById('pda').innerHTML = states_a.length
-                //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
-                //     : `<p>Наведите курсор на регион</p>`;
-                // console.log(states_s[0].properties);
                 });
             });
 
             </script>
 
         </div>
-
         <div id="test" class="tabcontent">
             <h3>Paris</h3>
             <p>Paris is the capital of France.</p>
