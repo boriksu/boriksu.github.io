@@ -15,6 +15,12 @@ h3 {
 p {
   margin: 10px;
 }
+table {
+  margin: 8px;
+}
+.cell {
+  width: 230px;
+}
 .map-overlay {
   position: relative;
   background: #fff;

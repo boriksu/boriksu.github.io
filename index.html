@@ -47,7 +47,7 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Школы</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Партнерские организации</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
                 </div>
@@ -62,7 +62,7 @@
             </div> 
         </div>
         
-        <div id="abitur" class="tabcontent"> <!-- Абитуриенты -->
+        <div id="abitur" class="tabcontent"> 
             <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Абитуриенты НИУ ВШЭ Москва</h2>
@@ -76,7 +76,9 @@
             // create map
             const map = new mapboxgl.Map({
                 container: 'map', // container id
-                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1    
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1  
+                zoom: 3.79,
+                center: [57.568, 58.379],  
             });
             
             map.on('load', () => {
@@ -108,7 +110,9 @@
 
             const map_c = new mapboxgl.Map({
                 container: 'check', // container id
-                style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2  
+                style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_c.on('load', () => {
@@ -142,6 +146,8 @@
             const map_r = new mapboxgl.Map({
                 container: 'check_r', // container id
                 style: 'mapbox://styles/boriksu/cle4dz7jo001i01qmxj7xm045', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_r.on('load', () => {
@@ -173,7 +179,9 @@
 
             const map_i = new mapboxgl.Map({
                 container: 'check_i', // container id
-                style: 'mapbox://styles/boriksu/cldstcajh000w01ta3su6zf44', // map style URL from Mapbox Studio - test2  
+                style: 'mapbox://styles/boriksu/cldstcajh000w01ta3su6zf44', // map style URL from Mapbox Studio - test2 
+                zoom: 3.79,
+                center: [57.568, 58.379], 
             });
             
             map_i.on('load', () => {
@@ -207,6 +215,8 @@
             const map_p = new mapboxgl.Map({
                 container: 'check_p', // container id
                 style: 'mapbox://styles/boriksu/cle4b07n8000e01oejisy6ojc', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_p.on('load', () => {
@@ -218,8 +228,13 @@
                 const states_p = map_p.queryRenderedFeatures(event.point, {
                     layers: ['population']
                 });
+
+                const ru_all = new Intl.NumberFormat("ru").format(states_p[0].properties.population);
+                const ru = new Intl.NumberFormat("ru").format(states_p[0].properties.teen);
+
+
                 document.getElementById('pdp').innerHTML = states_p.length
-                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${states_p[0].properties.population}</strong> человек, из них <strong>${states_p[0].properties.teen}</strong> в возрасте 15-19 лет</em></p>`
+                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
             });
@@ -240,6 +255,8 @@
             const map_so = new mapboxgl.Map({
                 container: 'check_so', // container id
                 style: 'mapbox://styles/boriksu/cle4b7oi4005w01ogbbo2bimb', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_so.on('load', () => {
@@ -256,7 +273,7 @@
                     if (states_so[0].properties.social_lift_total == 0) {
                         document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
                     } else {
-                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе</em><br>
+                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе<br>
                         <em>в рамках основного конкурса : <strong>${states_so[0].properties.social_lift}</strong></em><br>
                         <em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states_so[0].properties.social_lift_veteran}</strong></em></p>`
                     }
@@ -282,6 +299,8 @@
             const map_s = new mapboxgl.Map({
                 container: 'check_s', // container id
                 style: 'mapbox://styles/boriksu/cldstd82f002401pbltje4vmi', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_s.on('load', () => {
@@ -294,9 +313,9 @@
                     layers: ['total_school']
                 });
                 document.getElementById('pdh').innerHTML = states_s.length
-                    ? `<h3>${states_s[0].properties.name_ru}</h3><p><em>Базовые школы : <strong>${states_s[0].properties.base_school}</strong></em>
-                    <em>; Школы-партнеры : <strong>${states_s[0].properties.school_partner}</strong></em>
-                    <em>; Школы распределенного лицея : <strong>${states_s[0].properties.licey}</strong></em></p>`
+                    ? `<h3>${states_s[0].properties.name_ru}</h3><p><em>Базовые школы: <strong>${states_s[0].properties.base_school}</strong></em></br>
+                    <em>Школы-партнеры: <strong>${states_s[0].properties.school_partner}</strong></em></br>
+                    <em> Школы распределенного лицея: <strong>${states_s[0].properties.licey}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 // console.log(states_s[0].properties);
                 });
@@ -312,12 +331,12 @@
             <div id="pda"><p>Наведите курсор на регион</p></div>
             </div>
 
-
             <script>
-
             const map_a = new mapboxgl.Map({
                 container: 'check_a', // container id
                 style: 'mapbox://styles/boriksu/cldtyiq2200cd01t99mmzv8if', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_a.on('load', () => {
@@ -334,7 +353,7 @@
                     if (states_a[0].properties.agreement_1 == 0) {
                         document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
                     } else {
-                        document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+                        document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с: <strong>${states_a[0].properties.agreement}</strong></em></p>`
                     }
                 } else {
                     document.getElementById('pda').innerHTML = `<p>Наведите курсор на регион</p>`
@@ -356,12 +375,12 @@
             <div id="pdf"><p>Наведите курсор на регион</p></div>
             </div>
 
-
             <script>
-
             const map_f = new mapboxgl.Map({
                 container: 'check_f', // container id
                 style: 'mapbox://styles/boriksu/cldsw0ujt001401n2mwqrd7lo', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_f.on('load', () => {
@@ -378,15 +397,11 @@
                     if (states_f[0].properties.federal == "") {
                         document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>В регионе нет федерального университета</em></p>`
                     } else {
-                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em><strong>${states_f[0].properties.federal}</strong></em></p>`
+                        document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>${states_f[0].properties.federal}</em></p>`
                     }
                 } else {
                     document.getElementById('pdf').innerHTML = `<p>Наведите курсор на регион</p>`
                 }
-                // document.getElementById('pda').innerHTML = states_a.length
-                //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
-                //     : `<p>Наведите курсор на регион</p>`;
-                // console.log(states_s[0].properties);
                 });
             });
 
@@ -400,12 +415,12 @@
             <div id="pde"><p>Наведите курсор на регион</p></div>
             </div>
 
-
             <script>
-
             const map_e = new mapboxgl.Map({
                 container: 'check_e', // container id
                 style: 'mapbox://styles/boriksu/cldu4ypmu003501mh959fv1m3', // map style URL from Mapbox Studio - test2  
+                zoom: 3.79,
+                center: [57.568, 58.379],
             });
             
             map_e.on('load', () => {
@@ -422,14 +437,27 @@
                     if (states_e[0].properties.event_1== '0') {
                         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
                     } else {
-                        // console.log(states_e[0].properties.event.split("],["));
-                        // let i = 0;
-                        // let len = states_e[0].properties.event.length;
-                        // let text = "";
-                        // for (; i < len; i++) {
-                        //     text += states_e[0].properties.event[i] + "<br>";
-                        // }
-                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em><strong>$</strong></em></p>`
+                        // console.log(states_e[0].properties.event.split(','));
+                        let text = "";
+                        let lines = states_e[0].properties.event.split(',');
+                        // console.log(lines[0].slice(3, lines[0].length-1)); // регион
+                        // console.log(lines[1].slice(1, lines[1].length-1));  // цифра
+                        // console.log(lines[2].slice(1, lines[2].length-1));
+                        text += lines[2].slice(1, lines[2].length-1) + ", " + lines[3].slice(1, lines[3].length-1) + ", " + lines[4].slice(1, lines[4].length-1);
+                        // console.log(lines[3].slice(1, lines[3].length-1));
+                        // console.log(lines[4].slice(1, lines[4].length-1));
+                        // console.log(lines[5].slice(1, lines[5].length-3));  // ответственный
+                        if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+                            text += ' 2023'
+                        }
+                        if (lines.length > 6) {
+                            text += "<br>" + lines[8].slice(1, lines[8].length-1) + ", " + lines[9].slice(1, lines[9].length-1) + ", " + lines[10].slice(1, lines[10].length-1);
+                        
+                        if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+                            text += ' 2023'
+                        }}
+
+                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>${text}</em></p>`
                     }
                 } else {
                     document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
@@ -448,7 +476,7 @@
         <div id="common" class="tabcontent">
             <div id="check_co" class ="view"></div>
             <div class="map-overlay" id="features">
-            <h2>Общий вид</h2>
+            <h2>Общая информация</h2>
             <div id="pd_co"><p>Наведите курсор на регион</p></div>
             </div>
 
@@ -459,7 +487,9 @@
             // create map
             const map_co = new mapboxgl.Map({
                 container: 'check_co', // container id
-                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1    
+                style: 'mapbox://styles/boriksu/cle5qsgtn003r01kbyouvx91d', // map style URL from Mapbox Studio - test1 
+                zoom: 3.79,
+                center: [57.568, 58.379],   
             });
             
             map_co.on('load', () => {
@@ -477,13 +507,25 @@
                     const states_co_s = map_co.queryRenderedFeatures(event.point, {
                         layers: ['stud']
                     });
+                    const states_co_sc = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['school']
+                    });
+                    const states_co_e = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['event']
+                    });
 
-                    if (states_co_a.length&states_co_d.length) {
+                    const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
+                    if (states_co_a.length) {
+                        // console.log(states_co_a[0].properties.name_ru)
+                        // console.log("hello")
                         document.getElementById('pd_co').innerHTML = `<h3>${states_co_a[0].properties.name_ru}</h3>
-                            <p><em>Количество абитуриентов: <strong>${states_co_a[0].properties.abitur}</strong></em><br>
-                            <em>Количество зачисленных: <strong>${states_co_s[0].properties.stud}</strong></em><br>
-                            <em>Численность население: <strong>${states_co_d[0].properties.population}</strong></em><br>
-                            <em>Средний доход: <strong>${states_co_d[0].properties.income}</strong></em></p>`
+                        <table>
+                            <tr><td class ="cell"><i>Количество абитуриентов: </i></td><td><b>${states_co_a[0].properties.abitur}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Количество зачисленных: </i></td><td><b>${states_co_s[0].properties.stud}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${states_co_d[0].properties.income}</b> руб./месяц</td></tr>
+                            <tr><td class ="cell"><i>Партнерские организации: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
+                        </table>`
                     } else {
                         document.getElementById('pd_co').innerHTML = `<p>Наведите курсор на регион</p>`
                     }
