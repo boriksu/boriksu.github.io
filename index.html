@@ -258,9 +258,9 @@
                     if (states_so[0].properties.social_lift_total == 0) {
                         document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
                     } else {
-                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе</em></p>
-                        <p><em>в рамках основного конкурса : <strong>${states_so[0].properties.social_lift}</strong></em></p>
-                        <p><em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states_so[0].properties.social_lift_veteran}</strong></em></p>`
+                        document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе</em><br>
+                        <em>в рамках основного конкурса : <strong>${states_so[0].properties.social_lift}</strong></em><br>
+                        <em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states_so[0].properties.social_lift_veteran}</strong></em></p>`
                     }
                 } else {
                     document.getElementById('pdso').innerHTML = `<p>Наведите курсор на регион</p>`
@@ -426,7 +426,14 @@
                     if (states_e[0].properties.event_1== '0') {
                         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
                     } else {
-                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em><strong>${states_e[0].properties.event}</strong></em></p>`
+                        // console.log(states_e[0].properties.event.split("],["));
+                        // let i = 0;
+                        // let len = states_e[0].properties.event.length;
+                        // let text = "";
+                        // for (; i < len; i++) {
+                        //     text += states_e[0].properties.event[i] + "<br>";
+                        // }
+                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em><strong>$</strong></em></p>`
                     }
                 } else {
                     document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
@@ -443,8 +450,55 @@
             <img src="images.jpeg" />
         </div>
         <div id="common" class="tabcontent">
-            <h3>Common view</h3>
-            <p>Common view</p>
+            <!-- <h3>Common view</h3>
+            <p>Common view</p> -->
+
+            <div class="map-overlay" id="features">
+            <h2>Общий вид</h2>
+            <div id="pd_co"><p>Наведите курсор на регион</p></div>
+            </div>
+            <div id="check_co"></div>
+            <!-- <div class="map-overlay" id="legend"></div> -->
+            <script>
+            // define access token
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+
+            // create map
+            const map_co = new mapboxgl.Map({
+                container: 'check_co', // container id
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1    
+            });
+            
+            map_co.on('load', () => {
+                // make a pointer cursor
+                map_co.getCanvas().style.cursor = 'default';
+
+                // change info window on hover
+                map_co.on('mousemove', (event) => {
+                    const states_co_d = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['dem']
+                    });
+                    const states_co_a = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['abitur']
+                    });
+                    const states_co_s = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['stud']
+                    });
+
+                    if (states_co_a.length&states_co_d.length) {
+                        document.getElementById('pd_co').innerHTML = `<h3>${states_co_a[0].properties.name_ru}</h3>
+                            <p><em>Количество абитуриентов: <strong>${states_co_a[0].properties.abitur}</strong></em><br>
+                            <em>Количество зачисленных: <strong>${states_co_s[0].properties.stud}</strong></em><br>
+                            <em>Численность население: <strong>${states_co_d[0].properties.population}</strong></em><br>
+                            <em>Средний доход: <strong>${states_co_d[0].properties.income}</strong></em></p>`
+                    } else {
+                        document.getElementById('pd_co').innerHTML = `<p>Наведите курсор на регион</p>`
+                    }
+                });
+            });
+
+            </script>
+
         </div>
 
         <script> // switching between tabs
