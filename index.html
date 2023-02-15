@@ -63,7 +63,7 @@
         </div>
         
         <div id="abitur" class="tabcontent"> <!-- Абитуриенты -->
-            <div id="map"></div>
+            <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Абитуриенты НИУ ВШЭ Москва</h2>
             <div id="pd"><p>Наведите курсор на регион</p></div>
@@ -98,13 +98,11 @@
 
         </div>
         <div id="stud" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
-            <div class="map-overlay" id="features">
+            <div id="check" class ="view"></div>
+            <div class="map-overlay">
             <h2>Зачисленные студенты НИУ ВШЭ Москва</h2>
             <div id="pds"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check"></div>
 
             <script>
 
@@ -132,12 +130,12 @@
 
         </div>
         <div id="ratio" class="tabcontent">
-
+            <div id="check_r" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Показатель соотношения числа абитуриентов к населению региона в возрасте 15-19 лет</h2>
             <div id="pdr"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_r"></div>
+            
 
             <script>
 
@@ -165,13 +163,11 @@
 
         </div>
         <div id="income" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
-            <div class="map-overlay" id="features">
+            <div id="check_i" class ="view"></div>
+            <div class="map-overlay">
             <h2>Среднедушевые денежные доходы населения по субъектам Российской федерации за 2021 год</h2>
             <div id="pdi"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_i"></div>
 
             <script>
 
@@ -199,11 +195,12 @@
 
         </div>
         <div id="population" class="tabcontent">
+            <div id="check_p" class ="view"></div>            
             <div class="map-overlay" id="features">
             <h2>Численность населения на 1 января 2022 года</h2>
             <div id="pdp"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_p"></div>
+
 
             <script>
 
@@ -231,11 +228,12 @@
 
         </div>
         <div id="social" class="tabcontent">
+            <div id="check_so" class ="view"></div>            
             <div class="map-overlay" id="features">
             <h2>Зачисленные по льготе "Социальный лифт"</h2>
             <div id="pdso"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_so"></div>
+
 
             <script>
 
@@ -272,13 +270,12 @@
 
         </div>
         <div id="school" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
+            <div id="check_s" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Соглашения НИУ ВШЭ со школами</h2>
             <div id="pdh"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_s"></div>
+
 
             <script>
 
@@ -309,13 +306,12 @@
 
         </div>
         <div id="agree" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
+            <div id="check_a" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Соглашение о взаимодействии с органом управления региона</h2>
             <div id="pda"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_a"></div>
+
 
             <script>
 
@@ -354,13 +350,12 @@
 
         </div>
         <div id="federal" class="tabcontent">
-            <!-- <h3>Tokyo</h3>
-            <p>Tokyo is the capital of Japan.</p>  -->
+            <div id="check_f" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Наличие федерального университета в регионе</h2>
             <div id="pdf"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_f"></div>
+
 
             <script>
 
@@ -399,11 +394,12 @@
 
         </div>
         <div id="event" class="tabcontent">
+            <div id="check_e" class ="view"></div>            
             <div class="map-overlay" id="features">
             <h2>Выезды и мероприятия Центра по взаимодействию с регионами</h2>
             <div id="pde"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_e"></div>
+
 
             <script>
 
@@ -450,15 +446,12 @@
             <img src="images.jpeg" />
         </div>
         <div id="common" class="tabcontent">
-            <!-- <h3>Common view</h3>
-            <p>Common view</p> -->
-
+            <div id="check_co" class ="view"></div>
             <div class="map-overlay" id="features">
             <h2>Общий вид</h2>
             <div id="pd_co"><p>Наведите курсор на регион</p></div>
             </div>
-            <div id="check_co"></div>
-            <!-- <div class="map-overlay" id="legend"></div> -->
+
             <script>
             // define access token
             mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
@@ -516,9 +509,10 @@
             evt.currentTarget.className += " active";
         }
         // Get the element with id="defaultOpen" and click on it
-        document.getElementById("abitur").style.display = "none";
-        document.getElementById("stud").style.display = "none";
-        document.getElementById("test").style.display = "none";
+        // document.getElementById("abitur").style.display = "none";
+        // document.getElementById("stud").style.display = "none";
+        // document.getElementById("test").style.display = "none";
+        // document.getElementById("income").style.display = "none";
 
         document.getElementById("defaultOpen").click();
 
