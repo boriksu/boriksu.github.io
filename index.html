@@ -29,7 +29,7 @@
                 <a href="#" class="tablinks" onclick="openCity(event, 'abitur')">Абитуриенты</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'stud')">Зачисленные</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'ratio')">Соотношение</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a>
+                <!-- <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a> -->
                 </div>
             </div>
             <div class="dropdown"> <!-- Демография и уровень жизни -->
@@ -196,8 +196,9 @@
                 const states_i = map_i.queryRenderedFeatures(event.point, {
                     layers: ['income']
                 });
+                const ru = new Intl.NumberFormat("ru").format(states_i[0].properties.income);
                 document.getElementById('pdi').innerHTML = states_i.length
-                    ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${states_i[0].properties.income}</strong> руб./месяц</em></p>`
+                    ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
             });
@@ -471,11 +472,11 @@
             </script>
 
         </div>
-        <div id="test" class="tabcontent">
+        <!-- <div id="test" class="tabcontent">
             <h3>Paris</h3>
             <p>Paris is the capital of France.</p>
             <img src="images.jpeg" />
-        </div>
+        </div> -->
         <div id="common" class="tabcontent">
             <div id="check_co" class ="view"></div>
             <div class="map-overlay" id="features">
