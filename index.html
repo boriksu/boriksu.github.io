@@ -159,8 +159,11 @@
                 const states_r = map_r.queryRenderedFeatures(event.point, {
                     layers: ['ratio']
                 });
+
+                const ru = new Intl.NumberFormat("ru", maximumFractionDigits=3).format(states_r[0].properties.ratio_abitur);
+
                 document.getElementById('pdr').innerHTML = states_r.length
-                    ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${states_r[0].properties.ratio_abitur}</strong></em></p>`
+                    ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
                 });
             });
