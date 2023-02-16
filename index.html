@@ -61,11 +61,13 @@
                 </div>
             </div> 
         </div>
+
+
         
         <div id="abitur" class="tabcontent"> 
             <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
-            <h2>Абитуриенты НИУ ВШЭ Москва</h2>
+            <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2>
             <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
             <!-- <div class="map-overlay" id="legend"></div> -->
@@ -102,7 +104,7 @@
         <div id="stud" class="tabcontent">
             <div id="check" class ="view"></div>
             <div class="map-overlay">
-            <h2>Зачисленные студенты НИУ ВШЭ Москва</h2>
+            <h2>Зачисленные студенты НИУ ВШЭ Москва в 2022 году</h2>
             <div id="pds"><p>Наведите курсор на регион</p></div>
             </div>
 
@@ -136,7 +138,7 @@
         <div id="ratio" class="tabcontent">
             <div id="check_r" class ="view"></div>
             <div class="map-overlay" id="features">
-            <h2>Показатель соотношения числа абитуриентов к населению региона в возрасте 15-19 лет</h2>
+            <h2>Показатель соотношения числа абитуриентов к населению региона </br>в возрасте 15-19 лет на 2022 год</h2>
             <div id="pdr"><p>Наведите курсор на регион</p></div>
             </div>
             
@@ -160,7 +162,7 @@
                     layers: ['ratio']
                 });
 
-                const ru = new Intl.NumberFormat("ru", maximumFractionDigits=3).format(states_r[0].properties.ratio_abitur);
+                const ru = new Intl.NumberFormat("en", maximumFractionDigits=3).format(states_r[0].properties.ratio_abitur);
 
                 document.getElementById('pdr').innerHTML = states_r.length
                     ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`
@@ -249,7 +251,7 @@
         <div id="social" class="tabcontent">
             <div id="check_so" class ="view"></div>            
             <div class="map-overlay" id="features">
-            <h2>Зачисленные по льготе "Социальный лифт"</h2>
+            <h2>Зачисленные по льготе "Социальный лифт" в 2022 году</h2>
             <div id="pdso"><p>Наведите курсор на регион</p></div>
             </div>
 
@@ -519,6 +521,7 @@
                     });
 
                     const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
+                    const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
                     if (states_co_a.length) {
                         // console.log(states_co_a[0].properties.name_ru)
                         // console.log("hello")
@@ -527,7 +530,7 @@
                             <tr><td class ="cell"><i>Количество абитуриентов: </i></td><td><b>${states_co_a[0].properties.abitur}</b> чел.</td></tr>
                             <tr><td class ="cell"><i>Количество зачисленных: </i></td><td><b>${states_co_s[0].properties.stud}</b> чел.</td></tr>
                             <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
-                            <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${states_co_d[0].properties.income}</b> руб./месяц</td></tr>
+                            <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
                             <tr><td class ="cell"><i>Партнерские организации: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
                         </table>`
                     } else {
