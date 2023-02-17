@@ -70,7 +70,13 @@
             <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2>
             <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
-            <!-- <div class="map-overlay" id="legend"></div> -->
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="4"><div class="leg-abitur"></div></td></tr>
+                    <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
+                  </table>
+            </div></div>
             <script>
             // define access token
             mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
@@ -86,6 +92,34 @@
             map.on('load', () => {
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
+
+                // HERE !!!        
+                // // define layer names
+                // const layers = [
+                // '1 - мин',
+                // '7492 - макс'
+                // ];
+                // const colors = [
+                // '#b0e0e6',
+                // '#00008b'
+                // ];
+
+                // // create legend
+                // const legend = document.getElementById('legend');
+
+                // layers.forEach((layer, i) => {
+                // const color = colors[i];
+                // const item = document.createElement('div');
+                // const key = document.createElement('span');
+                // key.className = 'legend-key';
+                // key.style.backgroundColor = color;
+
+                // const value = document.createElement('span');
+                // value.innerHTML = `${layer}`;
+                // item.appendChild(key);
+                // item.appendChild(value);
+                // legend.appendChild(item);
+                // });
 
                 // change info window on hover
                 map.on('mousemove', (event) => {
@@ -107,6 +141,13 @@
             <h2>Зачисленные студенты НИУ ВШЭ Москва в 2022 году</h2>
             <div id="pds"><p>Наведите курсор на регион</p></div>
             </div>
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="4"><div class="leg-stud"></div></td></tr>
+                    <tr><td>0</td><td><div class="text-in">100</div></td><td><div class="text-in">200</div></td><td><div class="text-in">3617</div></td></tr>
+                  </table>
+            </div></div>
 
             <script>
 
@@ -141,8 +182,14 @@
             <h2>Показатель соотношения числа абитуриентов к населению региона </br>в возрасте 15-19 лет на 2022 год</h2>
             <div id="pdr"><p>Наведите курсор на регион</p></div>
             </div>
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="4"><div class="leg-ratio"></div></td></tr>
+                    <tr><td>1</td><td><div class="text-in">15</div></td><td><div class="text-in">40</div></td><td><div class="text-in">143</div></td></tr>
+                  </table>
+            </div></div>
             
-
             <script>
 
             const map_r = new mapboxgl.Map({
@@ -162,11 +209,17 @@
                     layers: ['ratio']
                 });
 
-                const ru = new Intl.NumberFormat("en", maximumFractionDigits=3).format(states_r[0].properties.ratio_abitur);
+                if (states_r.length) {
+                    const ru = new Intl.NumberFormat("en", maximumFractionDigits=3).format(states_r[0].properties.ratio_abitur);
+                    document.getElementById('pdr').innerHTML = `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`;
+                }
+                else {
+                    document.getElementById('pdr').innerHTML =`<p>Наведите курсор на регион</p>`;
+                }
 
-                document.getElementById('pdr').innerHTML = states_r.length
-                    ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`
-                    : `<p>Наведите курсор на регион</p>`;
+                // document.getElementById('pdr').innerHTML = states_r.length
+                //     ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
                 });
             });
 
@@ -179,6 +232,13 @@
             <h2>Среднедушевые денежные доходы населения по субъектам Российской федерации за 2021 год</h2>
             <div id="pdi"><p>Наведите курсор на регион</p></div>
             </div>
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="2"><div class="leg-income"></div></td></tr>
+                    <tr><td style="font-size: 75%;">18 тыс</td><td><div class="text-in" style="font-size: 75%;">99 тыс</div></td></tr>
+                  </table>
+            </div></div>
 
             <script>
 
@@ -198,10 +258,16 @@
                 const states_i = map_i.queryRenderedFeatures(event.point, {
                     layers: ['income']
                 });
-                const ru = new Intl.NumberFormat("ru").format(states_i[0].properties.income);
-                document.getElementById('pdi').innerHTML = states_i.length
-                    ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`
-                    : `<p>Наведите курсор на регион</p>`;
+                if (states_i.length) {
+                    const ru = new Intl.NumberFormat("ru").format(states_i[0].properties.income);
+                    document.getElementById('pdi').innerHTML = `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`;
+                }
+                else {
+                    document.getElementById('pdi').innerHTML = `<p>Наведите курсор на регион</p>`;
+                }
+                // document.getElementById('pdi').innerHTML = states_i.length
+                //     ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
                 });
             });
 
@@ -214,6 +280,13 @@
             <h2>Численность населения на 1 января 2022 года</h2>
             <div id="pdp"><p>Наведите курсор на регион</p></div>
             </div>
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="2"><div class="leg-population"></div></td></tr>
+                    <tr><td style="font-size: 75%;">41 тыс</td><td><div class="text-in" style="font-size: 75%;">13 млн</div></td></tr>
+                  </table>
+            </div></div>
 
 
             <script>
@@ -235,13 +308,18 @@
                     layers: ['population']
                 });
 
-                const ru_all = new Intl.NumberFormat("ru").format(states_p[0].properties.population);
-                const ru = new Intl.NumberFormat("ru").format(states_p[0].properties.teen);
+                if (states_p.length) {
+                    const ru_all = new Intl.NumberFormat("ru").format(states_p[0].properties.population);
+                    const ru = new Intl.NumberFormat("ru").format(states_p[0].properties.teen);
+                    document.getElementById('pdp').innerHTML = `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`;
+                }
+                else {
+                    document.getElementById('pdp').innerHTML = `<p>Наведите курсор на регион</p>`;
+                }
 
-
-                document.getElementById('pdp').innerHTML = states_p.length
-                    ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`
-                    : `<p>Наведите курсор на регион</p>`;
+                // document.getElementById('pdp').innerHTML = states_p.length
+                //     ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`
+                //     : `<p>Наведите курсор на регион</p>`;
                 });
             });
 
@@ -254,6 +332,13 @@
             <h2>Зачисленные по льготе "Социальный лифт" в 2022 году</h2>
             <div id="pdso"><p>Наведите курсор на регион</p></div>
             </div>
+            <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="2"><div class="leg-social"></div></td></tr>
+                    <tr><td style="font-size: 75%;">1</td><td><div class="text-in" style="font-size: 75%;">11</div></td></tr>
+                  </table>
+            </div></div>
 
 
             <script>
@@ -438,36 +523,63 @@
                 const states_e = map_e.queryRenderedFeatures(event.point, {
                     layers: ['event']
                 });
-                
-                if (states_e.length) {
-                    if (states_e[0].properties.event_1== '0') {
-                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
-                    } else {
-                        // console.log(states_e[0].properties.event.split(','));
-                        let text = "";
-                        let lines = states_e[0].properties.event.split(',');
-                        // console.log(lines[0].slice(3, lines[0].length-1)); // регион
-                        // console.log(lines[1].slice(1, lines[1].length-1));  // цифра
-                        // console.log(lines[2].slice(1, lines[2].length-1));
-                        text += lines[2].slice(1, lines[2].length-1) + ", " + lines[3].slice(1, lines[3].length-1) + ", " + lines[4].slice(1, lines[4].length-1);
-                        // console.log(lines[3].slice(1, lines[3].length-1));
-                        // console.log(lines[4].slice(1, lines[4].length-1));
-                        // console.log(lines[5].slice(1, lines[5].length-3));  // ответственный
-                        if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
-                            text += ' 2023'
-                        }
-                        if (lines.length > 6) {
-                            text += "<br>" + lines[8].slice(1, lines[8].length-1) + ", " + lines[9].slice(1, lines[9].length-1) + ", " + lines[10].slice(1, lines[10].length-1);
-                        
-                        if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
-                            text += ' 2023'
-                        }}
 
-                        document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>${text}</em></p>`
+                const states_e_c = map_e.queryRenderedFeatures(event.point, {
+                    layers: ['eventcopy']
+                });
+                // console.log(states_e_c[0].properties.event2022)
+
+                if (states_e_c.length) {
+                    let text = "";
+                    if (states_e_c[0].properties.event2022_1 == '1') {
+                        let lines = states_e_c[0].properties.event2022.split('?');
+                        for (let i = 0; i < lines.length; i++) {
+                            let words = lines[i].split(';');
+                            text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+                        }
                     }
-                } else {
-                    document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
+                    if (states_e_c[0].properties.event2023_1 == '1') {
+                        let lines = states_e_c[0].properties.event2023.split('?');
+                        for (let i = 0; i < lines.length; i++) {
+                            let words = lines[i].split(';');
+                            text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+                        }
+                    }
+                    if (text == "") {
+                        text += "<p><em>Мероприятия не проводились</em></p>"
+                    }
+                    document.getElementById('pde').innerHTML = `<h3>${states_e_c[0].properties.name_ru}</h3><p>${text}</p>`
                 }
+                
+                // if (states_e.length) {
+                //     if (states_e[0].properties.event_1== '0') {
+                //         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
+                //     } else {
+                //         // console.log(states_e[0].properties.event.split(','));
+                //         let text = "";
+                //         let lines = states_e[0].properties.event.split(',');
+                //         // console.log(lines[0].slice(3, lines[0].length-1)); // регион
+                //         // console.log(lines[1].slice(1, lines[1].length-1));  // цифра
+                //         // console.log(lines[2].slice(1, lines[2].length-1));
+                //         text += lines[2].slice(1, lines[2].length-1) + ", " + lines[3].slice(1, lines[3].length-1) + ", " + lines[4].slice(1, lines[4].length-1);
+                //         // console.log(lines[3].slice(1, lines[3].length-1));
+                //         // console.log(lines[4].slice(1, lines[4].length-1));
+                //         // console.log(lines[5].slice(1, lines[5].length-3));  // ответственный
+                //         if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+                //             text += ' 2023'
+                //         }
+                //         if (lines.length > 6) {
+                //             text += "<br>" + lines[8].slice(1, lines[8].length-1) + ", " + lines[9].slice(1, lines[9].length-1) + ", " + lines[10].slice(1, lines[10].length-1);
+                        
+                //         if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+                //             text += ' 2023'
+                //         }}
+
+                //         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>${text}</em></p>`
+                //     }
+                // } else {
+                //     document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
+                // }
                 });
             });
 
@@ -485,6 +597,13 @@
             <h2>Общая информация</h2>
             <div id="pd_co"><p>Наведите курсор на регион</p></div>
             </div>
+            <!-- <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="4"><div class="leg-abitur"></div></td></tr>
+                    <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
+                  </table>
+            </div></div> -->
 
             <script>
             // define access token
@@ -501,6 +620,9 @@
             map_co.on('load', () => {
                 // make a pointer cursor
                 map_co.getCanvas().style.cursor = 'default';
+
+                // // create legend
+                const legend = document.getElementById('legend');
 
                 // change info window on hover
                 map_co.on('mousemove', (event) => {
@@ -520,9 +642,9 @@
                         layers: ['event']
                     });
 
-                    const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
-                    const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
                     if (states_co_a.length) {
+                        const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
+                        const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
                         // console.log(states_co_a[0].properties.name_ru)
                         // console.log("hello")
                         document.getElementById('pd_co').innerHTML = `<h3>${states_co_a[0].properties.name_ru}</h3>

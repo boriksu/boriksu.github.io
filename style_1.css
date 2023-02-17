@@ -43,6 +43,68 @@ table {
   display: none;
 } */
 
+/* #legend {
+  position: absolute;
+  top: 70%;
+  left: 87%;
+  height: 30px;
+  width: 150px;
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-color: #66c4c7;
+  border-style: solid;
+} */
+
+.leg-overlay {
+  position: absolute;
+  top: 85%;
+  left: 78%;
+  background: #fff;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+  display: inline-block;
+  /* border-color: #66c4c7;
+  border-style: solid; */
+}
+.text-in {
+  text-align: right;
+}
+
+.leg-abitur {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #b0e0e6, #62ccec, #00b3fa, #0095ff, #006fff, #0055f8, #0038ee, #0000e1, #0000cb, #0000b5, #0000a0, #00008b);
+}
+.leg-stud {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #b4df5d, #98cd4c, #7dbb3c, #60a92c, #42971b, #328d13, #1f8309, #007900, #007400, #006e00, #006900, #006400);
+}
+.leg-ratio {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #ffff00, #dfec00, #c0d900, #a3c600, #88b300, #75a600, #639900, #518c00, #418300, #307900, #1d6f00, #006600);
+}
+.leg-population {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #ccffff, #00deff, #00b5ff, #007fff, #6600ff);
+}
+.leg-income {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #ffd700, #ffac00, #ff7f15, #f2512c, #dc143c);
+}
+.leg-social {
+  width: 250px;
+  height: 20px;
+  background-image: linear-gradient(to right, #fed943, #d7ca2f, #b1ba1e, #8caa0d, #669900);
+}
+
+
 /* Style the tab */
 .tab {
 overflow: hidden;
