@@ -47,7 +47,7 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Партнерские организации</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Партнерские организации УОО</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
                 </div>
@@ -61,8 +61,6 @@
                 </div>
             </div> 
         </div>
-
-
         
         <div id="abitur" class="tabcontent"> 
             <div id="map" class ="view"></div>
@@ -649,11 +647,11 @@
                         // console.log("hello")
                         document.getElementById('pd_co').innerHTML = `<h3>${states_co_a[0].properties.name_ru}</h3>
                         <table>
-                            <tr><td class ="cell"><i>Количество абитуриентов: </i></td><td><b>${states_co_a[0].properties.abitur}</b> чел.</td></tr>
-                            <tr><td class ="cell"><i>Количество зачисленных: </i></td><td><b>${states_co_s[0].properties.stud}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Количество абитуриентов в 2022 году: </i></td><td><b>${states_co_a[0].properties.abitur}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Количество зачисленных в 2022 году: </i></td><td><b>${states_co_s[0].properties.stud}</b> чел.</td></tr>
                             <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
                             <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
-                            <tr><td class ="cell"><i>Партнерские организации: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
+                            <tr><td class ="cell"><i>Партнерские организации УОО: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
                         </table>`
                     } else {
                         document.getElementById('pd_co').innerHTML = `<p>Наведите курсор на регион</p>`
