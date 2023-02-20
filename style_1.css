@@ -219,3 +219,52 @@ border-top: none;
   margin: 0;
 }
 
+/* #map { position: absolute; top: 0; bottom: 0; width: 100%; } */
+
+#menu {
+  background: #9370DB;
+  position: relative;
+  display: inline-block;
+  /* z-index: 1; */
+  /* top: 70px;
+  left: 78%;
+  margin-left: 20px; */
+  margin-left: 10px;
+  border-radius: 3px;
+  /* width: 120px; */
+  /* border: 1px solid rgba(0, 0, 0, 0.4); */
+  font-family: Arial, sans-serif;
+}
+
+#menu a {
+  font-size: 13px;
+  color: #404040;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding: 5px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+#menu a:last-child {
+  border: none;
+}
+
+#menu a:hover {
+  background-color: #f8f8f8;
+  color: #404040;
+  border-radius: 3px;
+}
+
+#menu a.active {
+  background-color: #B22222;
+  color: #ffffff;
+  border-radius: 3px;
+}
+
+#menu a.active:hover {
+  background: #8B0000;
+  border-radius: 3px;
+}

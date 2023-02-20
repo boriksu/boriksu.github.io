@@ -18,7 +18,7 @@
         <div class="navbar"> <!-- Верхняя панель меню -->
             <div class="dropdown-1"> <!-- Общий вид -->
                 <button class="dropbtn-1">
-                    <a href="#" class="tablinks" onclick="openCity(event, 'common')" id="defaultOpen">Общий вид</a>
+                    <a href="#" class="tablinks" onclick="openCity(event, 'common')">Общий вид</a>
                 </button>
             </div>
             <div class="dropdown"> <!-- Поступление -->
@@ -26,7 +26,7 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'abitur')">Абитуриенты</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'abitur')" id="defaultOpen">Абитуриенты</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'stud')">Зачисленные</a>
                 <a href="#" class="tablinks" onclick="openCity(event, 'ratio')">Соотношение</a>
                 <!-- <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a> -->
@@ -63,8 +63,12 @@
         </div>
         
         <div id="abitur" class="tabcontent"> 
+            <!-- <nav id="menu"></nav> -->
             <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
+            <!-- <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2> -->
+            <p>Отобразить выезды Центра взаимодействия с регионами</p>
+            <nav id="menu"></nav>
             <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2>
             <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
@@ -75,10 +79,10 @@
                     <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
                   </table>
             </div></div>
+            <nav id="menu"></nav>
             <script>
             // define access token
             mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
-
             // create map
             const map = new mapboxgl.Map({
                 container: 'map', // container id
@@ -90,34 +94,85 @@
             map.on('load', () => {
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
+                map.loadImage('icon-red-flag.png', (error, image) => {
+                    if (error) throw error;
+                        map.addImage('store-icon', image, { 'sdf': true });
+                map.addSource('museums', {
+                    type: 'vector',
+                    url: 'mapbox://boriksu.cle5oufvj05pw28mwq1pfh7fy-2naz7'
+                });
+                map.addLayer({
+                    'id': 'museums',
+                    'type': 'symbol',
+                    'source': 'museums',
+                    'layout': {
+                        // Make the layer visible by default.
+                        'visibility': 'none',
+                        'icon-image': 'store-icon',
+                        'icon-size': 0.1
+                    },
+                    'paint': {
+                                'icon-color': 'rgba(255,0,0,1)' },
+                    // 'paint': {
+                    //     'circle-radius': 6,
+                    //     'circle-color': 'rgba(255,0,0,1)'
+                    // },
+                    'source-layer': 'museum-cusco'
+                });
+            });
+                map.on('idle', () => {
+                    // If these two layers were not added to the map, abort
+                    if (!map.getLayer('museums')) {
+                        return;
+                    }
 
-                // HERE !!!        
-                // // define layer names
-                // const layers = [
-                // '1 - мин',
-                // '7492 - макс'
-                // ];
-                // const colors = [
-                // '#b0e0e6',
-                // '#00008b'
-                // ];
+                    // Enumerate ids of the layers.
+                    const toggleableLayerIds = ['museums'];
 
-                // // create legend
-                // const legend = document.getElementById('legend');
+                    // Set up the corresponding toggle button for each layer.
+                    for (const id of toggleableLayerIds) {
+                        // Skip layers that already have a button set up.
+                        if (document.getElementById(id)) {
+                            continue;
+                        }
 
-                // layers.forEach((layer, i) => {
-                // const color = colors[i];
-                // const item = document.createElement('div');
-                // const key = document.createElement('span');
-                // key.className = 'legend-key';
-                // key.style.backgroundColor = color;
+                        // Create a link.
+                        const link = document.createElement('a');
+                        link.id = id;
+                        link.href = '#';
+                        link.textContent = 'event 2022';
+                        link.className = '';
 
-                // const value = document.createElement('span');
-                // value.innerHTML = `${layer}`;
-                // item.appendChild(key);
-                // item.appendChild(value);
-                // legend.appendChild(item);
-                // });
+                        // Show or hide layer when the toggle is clicked.
+                        link.onclick = function (e) {
+                            const clickedLayer = this.id;
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const visibility = map.getLayoutProperty(
+                                clickedLayer,
+                                'visibility'
+                            );
+
+                            // Toggle layer visibility by changing the layout object's visibility property.
+                            if (visibility === 'visible') {
+                                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                                this.className = '';
+                            } else {
+                                this.className = 'active';
+                                map.setLayoutProperty(
+                                    clickedLayer,
+                                    'visibility',
+                                    'visible'
+                                );
+                            }
+                        };
+
+                        const layers = document.getElementById('menu');
+                        layers.appendChild(link);
+                    }
+                });
+
 
                 // change info window on hover
                 map.on('mousemove', (event) => {
