@@ -221,8 +221,8 @@ border-top: none;
 
 /* #map { position: absolute; top: 0; bottom: 0; width: 100%; } */
 
-#menu {
-  background: #9370DB;
+.menu {
+  background: #fff;
   position: relative;
   display: inline-block;
   /* z-index: 1; */
@@ -236,35 +236,37 @@ border-top: none;
   font-family: Arial, sans-serif;
 }
 
-#menu a {
+.menu a {
   font-size: 13px;
   color: #404040;
-  display: block;
-  margin: 0;
+  display: inline-block;
+  margin-right: 20px;
   padding: 0;
   padding: 5px;
   text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.25); */
   text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
 }
 
-#menu a:last-child {
+/* #menu a:last-child {
   border: none;
-}
+} */
 
-#menu a:hover {
+.menu a:hover {
   background-color: #f8f8f8;
   color: #404040;
   border-radius: 3px;
 }
 
-#menu a.active {
+.menu a.active {
   background-color: #B22222;
   color: #ffffff;
   border-radius: 3px;
 }
 
-#menu a.active:hover {
+.menu a.active:hover {
   background: #8B0000;
   border-radius: 3px;
 }
