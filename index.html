@@ -1416,6 +1416,23 @@
                     'source-layer': 'event2023'
                 });
             });
+
+
+            map_co.addSource('additional-reg-ukraine-9mijpp', {
+                    type: 'vector',
+                    url: 'mapbox://boriksu.bt3s2wpg'
+                });
+                map_co.addLayer({
+                    'id': 'additional-regions',
+                    'type': 'fill',
+                    'source': 'additional-reg-ukraine-9mijpp',
+                    'source-layer': 'additional-reg-ukraine-9mijpp',
+                    'paint': {
+                    'fill-outline-color': 'rgba(255,255,255,1)',
+                    'fill-color': 'rgba(102, 205, 170,1)'
+                    }
+                });
+
             map_co.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_co.getLayer('event2023') || !map_co.getLayer('event2022')) {
@@ -1492,6 +1509,10 @@
                     const states_co_e = map_co.queryRenderedFeatures(event.point, {
                         layers: ['event']
                     });
+                    const states_co_reg = map_co.queryRenderedFeatures(event.point, {
+                        layers: ['additional-regions']
+                    });
+                    console.log(states_co_reg)
 
                     if (states_co_a.length) {
                         const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
