@@ -142,7 +142,7 @@
                 map.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map.getLayer('event2023') || !map.getLayer('event2022')) {
-                        console.log('inside if abitur');
+                        // console.log('inside if abitur');
                         // console.log('hello-a', map.getLayer('event2023'), map.getLayer('event2022'));
                         return;
                     }
@@ -154,7 +154,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add abitur', id);
+                            // console.log('check add abitur', id);
                             continue;
                         }
 
@@ -192,7 +192,7 @@
 
                         const layers = document.getElementById('menu-abi');
                         layers.appendChild(link);
-                        console.log('add button abitur');
+                        // console.log('add button abitur');
                     }
                 });
 
@@ -202,9 +202,19 @@
                 const states = map.queryRenderedFeatures(event.point, {
                     layers: ['abitur']
                 });
+                const states_co_reg_a = map.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_a.length) {
+                    document.getElementById('pd').innerHTML = `<h3>${states_co_reg_a[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else {
                 document.getElementById('pd').innerHTML = states.length
                     ? `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
+                                        
+                }
                 });
             });
 
@@ -283,7 +293,7 @@
             map_c.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_c.getLayer('event2023') || !map_c.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -294,7 +304,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -332,7 +342,7 @@
 
                         const layers = document.getElementById('menu-c');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });    
 
@@ -341,9 +351,19 @@
                 const states_c = map_c.queryRenderedFeatures(event.point, {
                     layers: ['stud']
                 });
+                const states_co_reg_s = map_c.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_s.length) {
+                    document.getElementById('pds').innerHTML = `<h3>${states_co_reg_s[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else {
+
                 document.getElementById('pds').innerHTML = states_c.length
                     ? `<h3>${states_c[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_c[0].properties.stud}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
+                }
                 });
             });
 
@@ -422,7 +442,7 @@
             map_r.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_r.getLayer('event2023') || !map_r.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -433,7 +453,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -471,7 +491,7 @@
 
                         const layers = document.getElementById('menu-r');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -480,8 +500,14 @@
                 const states_r = map_r.queryRenderedFeatures(event.point, {
                     layers: ['ratio']
                 });
+                const states_co_reg_r = map_r.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
 
-                if (states_r.length) {
+                if (states_co_reg_r.length) {
+                    document.getElementById('pdr').innerHTML = `<h3>${states_co_reg_r[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_r.length) {
                     const ru = new Intl.NumberFormat("en", {style: "percent", minimumFractionDigits: 4}).format((states_r[0].properties.ratio_abitur)/10000);
                     // const ru = states_r[0].properties.ratio_abitur;
                     document.getElementById('pdr').innerHTML = `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`;
@@ -571,7 +597,7 @@
             map_i.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_i.getLayer('event2023') || !map_i.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -582,7 +608,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -620,7 +646,7 @@
 
                         const layers = document.getElementById('menu-i');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -629,7 +655,14 @@
                 const states_i = map_i.queryRenderedFeatures(event.point, {
                     layers: ['income']
                 });
-                if (states_i.length) {
+                const states_co_reg_i = map_i.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_i.length) {
+                    document.getElementById('pdi').innerHTML = `<h3>${states_co_reg_i[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_i.length) {
                     const ru = new Intl.NumberFormat("ru").format(states_i[0].properties.income);
                     document.getElementById('pdi').innerHTML = `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`;
                 }
@@ -716,7 +749,7 @@
             map_p.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_p.getLayer('event2023') || !map_p.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -727,7 +760,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -765,7 +798,7 @@
 
                         const layers = document.getElementById('menu-p');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -774,8 +807,14 @@
                 const states_p = map_p.queryRenderedFeatures(event.point, {
                     layers: ['population']
                 });
+                const states_co_reg_p = map_p.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
 
-                if (states_p.length) {
+                if (states_co_reg_p.length) {
+                    document.getElementById('pdp').innerHTML = `<h3>${states_co_reg_p[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_p.length) {
                     const ru_all = new Intl.NumberFormat("ru").format(states_p[0].properties.population);
                     const ru = new Intl.NumberFormat("ru").format(states_p[0].properties.teen);
                     document.getElementById('pdp').innerHTML = `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`;
@@ -866,7 +905,7 @@
             map_so.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_so.getLayer('event2023') || !map_so.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -877,7 +916,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -915,7 +954,7 @@
 
                         const layers = document.getElementById('menu-so');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });    
 
@@ -924,8 +963,14 @@
                 const states_so = map_so.queryRenderedFeatures(event.point, {
                     layers: ['social']
                 });
+                const states_co_reg_so = map_so.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
 
-                if (states_so.length) {
+                if (states_co_reg_so.length) {
+                    document.getElementById('pdso').innerHTML = `<h3>${states_co_reg_so[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_so.length) {
                     if (states_so[0].properties.social_lift_total == 0) {
                         document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
                     } else {
@@ -1007,7 +1052,7 @@
             map_s.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_s.getLayer('event2023') || !map_s.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -1018,7 +1063,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -1056,7 +1101,7 @@
 
                         const layers = document.getElementById('menu-s');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -1065,11 +1110,20 @@
                 const states_s = map_s.queryRenderedFeatures(event.point, {
                     layers: ['total_school']
                 });
+                const states_co_reg_h = map_s.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_h.length) {
+                    document.getElementById('pdh').innerHTML = `<h3>${states_co_reg_h[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else {
                 document.getElementById('pdh').innerHTML = states_s.length
                     ? `<h3>${states_s[0].properties.name_ru}</h3><p><em>Базовые школы: <strong>${states_s[0].properties.base_school}</strong></em></br>
                     <em>Школы-партнеры: <strong>${states_s[0].properties.school_partner}</strong></em></br>
                     <em> Школы распределенного лицея: <strong>${states_s[0].properties.licey}</strong></em></p>`
                     : `<p>Наведите курсор на регион</p>`;
+                }
                 // console.log(states_s[0].properties);
                 });
             });
@@ -1141,7 +1195,7 @@
             map_a.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_a.getLayer('event2023') || !map_a.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -1152,7 +1206,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -1190,7 +1244,7 @@
 
                         const layers = document.getElementById('menu-a');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -1199,8 +1253,14 @@
                 const states_a = map_a.queryRenderedFeatures(event.point, {
                     layers: ['agreement2']
                 });
-                
-                if (states_a.length) {
+                const states_co_reg_ag = map_a.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_ag.length) {
+                    document.getElementById('pda').innerHTML = `<h3>${states_co_reg_ag[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_a.length) {
                     if (states_a[0].properties.agreement_1 == 0) {
                         document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
                     } else {
@@ -1243,8 +1303,14 @@
                 const states_f = map_f.queryRenderedFeatures(event.point, {
                     layers: ['federal']
                 });
-                
-                if (states_f.length) {
+                const states_co_reg_f = map_f.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
+
+                if (states_co_reg_f.length) {
+                    document.getElementById('pdf').innerHTML = `<h3>${states_co_reg_f[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_f.length) {
                     if (states_f[0].properties.federal == "") {
                         document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>В регионе нет федерального университета</em></p>`
                     } else {
@@ -1287,9 +1353,14 @@
                 const states_e_c = map_e.queryRenderedFeatures(event.point, {
                     layers: ['eventcopy']
                 });
-                // console.log(states_e_c[0].properties.event2022)
+                const states_co_reg_e = map_e.queryRenderedFeatures(event.point, {
+                        layers: ['additional-reg-ukraine']
+                    });
 
-                if (states_e_c.length) {
+                if (states_co_reg_e.length) {
+                    document.getElementById('pde').innerHTML = `<h3>${states_co_reg_e[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                }
+                else if (states_e_c.length) {
                     let text = "";
                     if (states_e_c[0].properties.event2022_1 == '1') {
                         let lines = states_e_c[0].properties.event2022.split('?');
@@ -1417,26 +1488,10 @@
                 });
             });
 
-
-            map_co.addSource('additional-reg-ukraine-9mijpp', {
-                    type: 'vector',
-                    url: 'mapbox://boriksu.bt3s2wpg'
-                });
-                map_co.addLayer({
-                    'id': 'additional-regions',
-                    'type': 'fill',
-                    'source': 'additional-reg-ukraine-9mijpp',
-                    'source-layer': 'additional-reg-ukraine-9mijpp',
-                    'paint': {
-                    'fill-outline-color': 'rgba(255,255,255,1)',
-                    'fill-color': 'rgba(102, 205, 170,1)'
-                    }
-                });
-
             map_co.on('idle', () => {
                     // If these two layers were not added to the map, abort
                     if (!map_co.getLayer('event2023') || !map_co.getLayer('event2022')) {
-                        console.log('inside if');
+                        // console.log('inside if');
                         return;
                     }
 
@@ -1447,7 +1502,7 @@
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
                         if (document.getElementById(id)) {
-                            console.log('check add', id);
+                            // console.log('check add', id);
                             continue;
                         }
 
@@ -1485,7 +1540,7 @@
 
                         const layers = document.getElementById('menu-co');
                         layers.appendChild(link);
-                        console.log('add button');
+                        // console.log('add button');
                     }
                 });
 
@@ -1510,11 +1565,13 @@
                         layers: ['event']
                     });
                     const states_co_reg = map_co.queryRenderedFeatures(event.point, {
-                        layers: ['additional-regions']
+                        layers: ['additional-reg-ukraine']
                     });
-                    console.log(states_co_reg)
 
-                    if (states_co_a.length) {
+                    if (states_co_reg.length) {
+                        document.getElementById('pd_co').innerHTML = `<h3>${states_co_reg[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                    }
+                    else if (states_co_a.length) {
                         const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
                         const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
                         // console.log(states_co_a[0].properties.name_ru)
