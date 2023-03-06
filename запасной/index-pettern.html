@@ -81,7 +81,7 @@ body { margin: 0; padding: 0; }
         // }
         map.addSource('museums', {
             type: 'vector',
-            url: 'mapbox://boriksu.cle5oufvj05pw28mwq1pfh7fy-2naz7'
+            url: 'mapbox://mapbox.2opop9hr'
         });
         map.addLayer({
             'id': 'museums',
@@ -101,37 +101,37 @@ body { margin: 0; padding: 0; }
         // Add the Mapbox Terrain v2 vector tileset. Read more about
         // the structure of data in this tileset in the documentation:
         // https://docs.mapbox.com/vector-tiles/reference/mapbox-terrain-v2/
-        // map.addSource('contours', {
-        //     type: 'vector',
-        //     url: 'mapbox://mapbox.mapbox-terrain-v2'
-        // });
-        // map.addLayer({
-        //     'id': 'contours',
-        //     'type': 'line',
-        //     'source': 'contours',
-        //     'source-layer': 'contour',
-        //     'layout': {
-        //         // Make the layer visible by default.
-        //         'visibility': 'visible',
-        //         'line-join': 'round',
-        //         'line-cap': 'round'
-        //     },
-        //     'paint': {
-        //         'line-color': '#877b59',
-        //         'line-width': 1
-        //     }
-        // });
+        map.addSource('contours', {
+            type: 'vector',
+            url: 'mapbox://mapbox.mapbox-terrain-v2'
+        });
+        map.addLayer({
+            'id': 'contours',
+            'type': 'line',
+            'source': 'contours',
+            'source-layer': 'contour',
+            'layout': {
+                // Make the layer visible by default.
+                'visibility': 'visible',
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#877b59',
+                'line-width': 1
+            }
+        });
     });
 
     // After the last frame rendered before the map enters an "idle" state.
     map.on('idle', () => {
         // If these two layers were not added to the map, abort
-        if (!map.getLayer('museums')) {
+        if (!map.getLayer('contours') || !map.getLayer('museums')) {
             return;
         }
 
         // Enumerate ids of the layers.
-        const toggleableLayerIds = ['museums'];
+        const toggleableLayerIds = ['contours', 'museums'];
 
         // Set up the corresponding toggle button for each layer.
         for (const id of toggleableLayerIds) {
