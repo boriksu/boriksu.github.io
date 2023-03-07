@@ -16,72 +16,79 @@
     <body>
 
         <div class="navbar"> <!-- Верхняя панель меню -->
-            <div class="dropdown-1"> <!-- Общий вид -->
-                <button class="dropbtn-1">
-                    <a href="#" class="tablinks" onclick="openCity(event, 'common')" id="defaultOpen">Общий вид</a>
-                </button>
-            </div>
-            <div class="dropdown"> <!-- Поступление -->
+            <div class="dropdown">
                 <button class="dropbtn">Поступление 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'abitur')" id="defaultOpen">Абитуриенты</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'stud')">Зачисленные</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'ratio')">Процентное соотношение</a>
-                <!-- <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a> -->
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'abitur', activeLayer)">Абитуриенты</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'stud', activeLayer)">Зачисленные</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'ratio', activeLayer)">Процентное соотношение</a>
                 </div>
             </div>
-            <div class="dropdown"> <!-- Демография и уровень жизни -->
+            <div class="dropdown">
                 <button class="dropbtn">Демография и уровень жизни
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'population')">Численность населения</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'social')">Социальный лифт</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'population', activeLayer)">Численность населения</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'income', activeLayer)">Ср. доход населения</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'social', activeLayer)">Социальный лифт</a>
                 </div>
             </div>
-            <div class="dropdown"> <!-- Центр взаимодействия с регионами -->
+            <div class="dropdown">
                 <button class="dropbtn">Центр взаимодействия с регионами 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Партнерские организации УОО</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
-                <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'school', activeLayer)">Партнерские организации УОО</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'agree', activeLayer)">Соглашения</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'events', activeLayer)">Выезды</a>
                 </div>
             </div> 
-            <div class="dropdown"> <!-- Другое-->
+            <div class="dropdown">
                 <button class="dropbtn">Другое 
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="openCity(event, 'federal')">Фед. университет</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'federal', activeLayer)">Фед. университет</a>
                 </div>
             </div> 
         </div>
 
+<<<<<<< Updated upstream
+=======
+        <script>
+            const color2023 = 'rgba(0, 0, 255, 1)';
+            const color2022 = 'rgba(255, 0, 0, 1)';
+
+            const listLayers = ['abitur', 'stud', 'income'];
+            let activeLayer = 'abitur';
+
+        </script>
+
+>>>>>>> Stashed changes
         <div id="abitur" class="tabcontent"> 
             <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
-                <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
-                <nav id='menu-abi' class="menu"></nav><hr width="94%"/>
-                <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2>
+                <!-- <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+                <nav id='menu-abi' class="menu"></nav><hr width="94%"/> -->
+                <div id="hd"><h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2></div>
                 <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
-            <div class="leg-overlay">
+            <!-- <div class="leg-overlay">
                 <div>
                 <table >
                     <tr><td colspan="4"><div class="leg-abitur"></div></td></tr>
                     <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
                   </table>
             </div>
-        </div>
-            <!-- <nav id="menu"></nav> -->
-            <script>
+        </div> -->
+            
+            <script>  
             // define access token
             mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+            
             // create map
             const map = new mapboxgl.Map({
                 container: 'map', // container id
@@ -94,6 +101,7 @@
                 // make a pointer cursor
                 map.getCanvas().style.cursor = 'default';
 
+<<<<<<< Updated upstream
                 map.loadImage('icons/maps-and-flags.png', (error, image) => {
                     if (error) throw error;
                         map.addImage('store-icon', image, { 'sdf': true });
@@ -714,10 +722,70 @@
                         console.log('inside if');
                         return;
                     }
+=======
+                // change info window on hover
+                map.on('mousemove', (event) => {
+                    const states = map.queryRenderedFeatures(event.point, {
+                        layers: [activeLayer]
+                    });
+                    const states_ukr = map.queryRenderedFeatures(event.point, {
+                            layers: ['additional-reg-ukraine']
+                        });
 
-                    // Enumerate ids of the layers.
-                    const toggleableLayerIds = ['event2022-p','event2023-p'];
+                    if (states_ukr.length) {
+                        document.getElementById('pd').innerHTML = `<h3>${states_ukr[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                    }
+                    else if (states.length) {
+                        document.getElementById('pd').innerHTML = showData(activeLayer, states);
+                    }
+                    else {
+                        document.getElementById('pd').innerHTML = `<p>Наведите курсор на регион</p>`; 
+                    }
+                });
+            });
 
+
+            // function showLayer(event, newlayer) {
+            //     map.moveLayer(newlayer);
+            //     activeLayer = newlayer;
+            // }
+
+            function showRightHeader(layer) {
+                switch (layer) {
+                    case 'abitur':
+                        return 'Абитуриенты НИУ ВШЭ Москва в 2022 году'
+                    case 'stud':
+                        return 'Зачисленные студенты НИУ ВШЭ Москва в 2022 году'
+                    case 'income':
+                        return 'Процент абитуриентов НИУ ВШЭ Москва от населения региона </br>в возрасте 15-19 лет на 2022 год'
+                    case 'ratio':
+                        return 'Среднедушевые денежные доходы населения<br>по субъектам Российской федерации за 2021 год'
+                    case 'population':
+                        return 'Численность населения на 1 января 2022 года'
+                    case 'social':
+                        return 'Зачисленные по льготе "Социальный лифт" в 2022 году'
+                    case 'school':
+                    return 'Соглашения НИУ ВШЭ со школами на 01.02.2023г.'
+                    case 'agree':
+                        return 'Соглашение о взаимодействии с органом управления региона на 01.02.2023г.'
+                    case 'events':
+                        return 'Выезды и мероприятия Центра по взаимодействию с регионами'
+                    case 'federal':
+                        return 'Наличие федерального университета в регионе'
+                }
+            }
+>>>>>>> Stashed changes
+
+            function showHideLayer(event, newLayer, hideActiveLayer) {
+                document.getElementById('hd').innerHTML = `<h2>${showRightHeader(newLayer)}</h2>`;
+                if (newLayer == hideActiveLayer) {
+                    return ; }
+                map.setLayoutProperty(newLayer, 'visibility', 'visible');
+                map.setLayoutProperty(hideActiveLayer, 'visibility', 'none');
+                activeLayer = newLayer;
+            }
+
+<<<<<<< Updated upstream
                     // Set up the corresponding toggle button for each layer.
                     for (const id of toggleableLayerIds) {
                         // Skip layers that already have a button set up.
@@ -874,38 +942,52 @@
                         if (document.getElementById(id)) {
                             console.log('check add', id);
                             continue;
+=======
+            function showData(layer, states) {
+                let dataNumber;
+                switch (layer) {
+                    case 'abitur':
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`;
+                    case 'stud':
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states[0].properties.stud}</strong></em></p>`;
+                    case 'income':
+                        dataNumber = new Intl.NumberFormat("ru").format(states[0].properties.income);
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em><strong>${dataNumber}</strong> руб./месяц</em></p>`;
+                    case 'ratio':
+                        dataNumber = new Intl.NumberFormat("en", {style: "percent", minimumFractionDigits: 4}).format((states[0].properties.ratio_abitur)/10000);
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em>Показатель : <strong>${dataNumber}</strong></em></p>`;
+                    case 'population':
+                        const dataNumberAll = new Intl.NumberFormat("ru").format(states[0].properties.population);
+                        dataNumber = new Intl.NumberFormat("ru").format(states[0].properties.teen);
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em><strong>${dataNumberAll}</strong> человек, из них <strong>${dataNumber}</strong> в возрасте 15-19 лет</em></p>`;
+                    case 'social':
+                        if (states[0].properties.social_lift_total == 0) {
+                            return `<h3>${states[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
+                        } else {
+                            return `<h3>${states[0].properties.name_ru}</h3><p>Количество зачисленных по льготе "Социальный лифт" : <strong>${states[0].properties.social_lift_total}</strong> , в том числе<br>
+                                    <em>в рамках основного конкурса : <strong>${states[0].properties.social_lift}</strong></em><br>
+                                    <em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states[0].properties.social_lift_veteran}</strong></em></p>`
                         }
-
-                        // Create a link.
-                        const link = document.createElement('a');
-                        link.id = id;
-                        link.href = '#';
-                        link.textContent = id == 'event2022-so' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
-                        link.className = '';
-
-                        // Show or hide layer when the toggle is clicked.
-                        link.onclick = function (e) {
-                            const clickedLayer = this.id == 'event2022-so' ? 'event2022' : 'event2023';
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            const visibility = map_so.getLayoutProperty(
-                                clickedLayer,
-                                'visibility'
-                            );
-
-                            // Toggle layer visibility by changing the layout object's visibility property.
-                            if (visibility === 'visible') {
-                                map_so.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                                this.className = '';
-                            } else {
-                                this.className = 'active';
-                                map_so.setLayoutProperty(
-                                    clickedLayer,
-                                    'visibility',
-                                    'visible'
-                                );
+                    case 'school':
+                        return `<h3>${states[0].properties.name_ru}</h3><p><em>Базовые школы: <strong>${states[0].properties.base_school}</strong></em></br>
+                                <em>Школы-партнеры: <strong>${states[0].properties.school_partner}</strong></em></br>
+                                <em> Школы распределенного лицея: <strong>${states[0].properties.licey}</strong></em></p>`;
+                    case 'agree':
+                        if (states[0].properties.agreement_1 == 0) {
+                            return `<h3>${states[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
+                        } else {
+                            return `<h3>${states[0].properties.name_ru}</h3><p><em>Соглашение с: <strong>${states[0].properties.agreement}</strong></em></p>`
+>>>>>>> Stashed changes
+                        }
+                    case 'events':
+                        let text = "";
+                        if (states[0].properties.event2022_1 == '1') {
+                            let lines = states[0].properties.event2022.split('?');
+                            for (let i = 0; i < lines.length; i++) {
+                                let words = lines[i].split(';');
+                                text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
                             }
+<<<<<<< Updated upstream
                         };
 
                         const layers = document.getElementById('menu-so');
@@ -1096,20 +1178,28 @@
                         for (let i = 0; i < lines.length; i++) {
                             let words = lines[i].split(';');
                             text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+=======
                         }
-                    }
-                    if (states_e_c[0].properties.event2023_1 == '1') {
-                        let lines = states_e_c[0].properties.event2023.split('?');
-                        for (let i = 0; i < lines.length; i++) {
-                            let words = lines[i].split(';');
-                            text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+                        if (states[0].properties.event2023_1 == '1') {
+                            let lines = states[0].properties.event2023.split('?');
+                            for (let i = 0; i < lines.length; i++) {
+                                let words = lines[i].split(';');
+                                text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+                            }
                         }
-                    }
-                    if (text == "") {
-                        text += "<p><em>Мероприятия не проводились</em></p>"
-                    }
-                    document.getElementById('pde').innerHTML = `<h3>${states_e_c[0].properties.name_ru}</h3><p>${text}</p>`
+                        if (text == "") {
+                            text += "<p><em>Мероприятия не проводились</em></p>"
+>>>>>>> Stashed changes
+                        }
+                        return `<h3>${states[0].properties.name_ru}</h3><p>${text}</p>`
+                    case 'federal':
+                        if (states[0].properties.federal == "") {
+                            return `<h3>${states[0].properties.name_ru}</h3><p><em>В регионе нет федерального университета</em></p>`
+                        } else {
+                            return `<h3>${states[0].properties.name_ru}</h3><p><em>${states[0].properties.federal}</em></p>`
+                        }
                 }
+<<<<<<< Updated upstream
                 
                 // if (states_e.length) {
                 //     if (states_e[0].properties.event_1== '0') {
@@ -1311,34 +1401,13 @@
                     }
                 });
             });
+=======
+            }
+>>>>>>> Stashed changes
 
             </script>
 
         </div>
-
-        <script> // switching between tabs
-        function openCity(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-        // Get the element with id="defaultOpen" and click on it
-        // document.getElementById("abitur").style.display = "none";
-        // document.getElementById("stud").style.display = "none";
-        // document.getElementById("test").style.display = "none";
-        // document.getElementById("income").style.display = "none";
-
-        document.getElementById("defaultOpen").click();
-
-        </script>
 
     </body>
 </html>
