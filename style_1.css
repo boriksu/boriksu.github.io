@@ -30,6 +30,7 @@ table {
   overflow: auto;
   border-radius: 3px;
   display: inline-block;
+  min-width: 400px;
 }
 
 .view {    /*  all */
@@ -55,7 +56,7 @@ table {
   border-style: solid;
 } */
 
-.leg-overlay {
+/* .leg-overlay {
   position: absolute;
   top: 85%;
   left: 78%;
@@ -66,9 +67,8 @@ table {
   overflow: auto;
   border-radius: 3px;
   display: inline-block;
-  /* border-color: #66c4c7;
-  border-style: solid; */
-}
+} */
+
 .text-in {
   text-align: right;
 }
@@ -89,8 +89,8 @@ table {
   background-image: linear-gradient(to right, #ffff00, #dfec00, #c0d900, #a3c600, #88b300, #75a600, #639900, #518c00, #418300, #307900, #1d6f00, #006600);
 }
 .leg-population {
-  width: 250px;
-  height: 20px;
+  /* width: 250px;
+  height: 20px; */
   background-image: linear-gradient(to right, #ccffff, #00deff, #00b5ff, #007fff, #6600ff);
 }
 .leg-income {
@@ -229,6 +229,7 @@ border-top: none;
   /* top: 70px;
   left: 78%;
   margin-left: 20px; */
+  margin-top: 10px;
   margin-left: 10px;
   border-radius: 3px;
   /* width: 120px; */
@@ -270,3 +271,193 @@ border-top: none;
   background: #8B0000;
   border-radius: 3px;
 }
+
+/* turn on off */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 23px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider.future  {
+  background-color: #0729b2;
+}
+
+input:focus + .slider.future {
+  box-shadow: 0 0 1px #0729b2;
+}
+
+input:checked + .slider.past {
+  background-color: #fa5252;
+}
+
+input:focus + .slider.past {
+  box-shadow: 0 0 1px #fa5252;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(15px);
+  -ms-transform: translateX(15px);
+  transform: translateX(15px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 23px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/* POP UP */
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: 3px;
+  width: 60%;
+  overflow: auto;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  /* padding: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif; */
+}
+.popup .close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+}
+.popup .close:hover {
+  color: #f00;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+.popup .content table{
+  margin: 0;
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+.popup .content TD, TH {
+  padding: 3px; /*Поля вокруг содержимого таблицы */
+  border: 1px solid black; /* Параметры рамки */
+ }
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+
+.popup .content a {
+  text-decoration: none;
+}
+
+.popup .content a:hover {
+  text-decoration: underline;
+}
+
+/* Legend */
+
+.my-legend {
+  position: absolute;
+  top: 85%;
+  right: 3%;
+  /* left: 78%; */
+  background: #fff;
+  /* margin-left: 20px;
+  margin-top: 20px; */
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.my-legend .legend-scale ul {
+  margin: 0;
+  padding: 10px;
+  float: left;
+  list-style: none;
+  }
+.my-legend .legend-scale ul li {
+  display: block;
+  float: left;
+  width: 50px;
+  /* margin-bottom: 6px; */
+  text-align: center;
+  font-size: 90%;
+  list-style: none;
+  }
+.my-legend ul.legend-labels li span {
+  display: block;
+  border: 1px solid #000;
+  float: left;
+  height: 15px;
+  width: 50px;
+  }

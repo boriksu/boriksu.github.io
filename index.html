@@ -13,9 +13,14 @@
         />
         <link rel="stylesheet" href="style_1.css" type="text/css">
     </head>
-    <body>
+    <body link="#0000CD" vlink="#0000CD" alink="#0000CD">
 
         <div class="navbar"> <!-- Верхняя панель меню -->
+            <div class="dropdown-1">
+                <button class="dropbtn-1">
+                    <a href="#" class="tablinks" onclick="showHideLayer(event, 'common', activeLayer)">Общий вид</a>
+                </button>
+            </div>
             <div class="dropdown">
                 <button class="dropbtn">Поступление 
                 <i class="fa fa-caret-down"></i>
@@ -51,36 +56,47 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#" class="tablinks" onclick="showHideLayer(event, 'federal', activeLayer)">Фед. университет</a>
+                <a href="#" class="tablinks" onclick="showHideLayer(event, 'federal', activeLayer)">Фед. университеты</a>
                 </div>
             </div> 
+            <div class="dropdown-1">
+                <button class="dropbtn-1">
+                    <a class="button" href="#popup1">Источники данных</a>
+                </button>
+            </div>
         </div>
 
         <script>
-            const color2023 = 'rgba(0, 0, 255, 1)';
-            const color2022 = 'rgba(255, 0, 0, 1)';
-
-            const listLayers = ['abitur', 'stud', 'income'];
-            let activeLayer = 'abitur';
+            let activeLayer = 'common';
 
         </script>
 
-        <div id="abitur" class="tabcontent"> 
+        <div id="main" class="tabcontent"> 
             <div id="map" class ="view"></div>
             <div class="map-overlay" id="features">
-                <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
-                <nav id='menu-abi' class="menu"></nav><hr width="94%"/>
-                <div id="hd"><h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2></div>
+                <div class="menu">
+                    Отобразить выезды на 2023 год&nbsp
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            onChange="turnOnOffEvent('event2023')">
+                        <span class="slider future round"></span>
+                      </label>
+                    <br>
+                    Отобразить выезды за 2020-2022 года&nbsp
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            onChange="turnOnOffEvent('event2022')">
+                        <span class="slider past round"></span>
+                    </label>
+                </div>
+                <div id="hd"><h2>Сводная информация</h2></div>
                 <div id="pd"><p>Наведите курсор на регион</p></div>
             </div>
-            <!-- <div class="leg-overlay">
-                <div>
-                <table >
-                    <tr><td colspan="4"><div class="leg-abitur"></div></td></tr>
-                    <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
-                  </table>
+            <div class="my-legend">
+                <div id='legend-inside'class='legend-scale'></div>
             </div>
-        </div> -->
             
             <script>  
             // define access token
@@ -104,8 +120,8 @@
                         layers: [activeLayer]
                     });
                     const states_ukr = map.queryRenderedFeatures(event.point, {
-                            layers: ['additional-reg-ukraine']
-                        });
+                        layers: ['additional-reg-ukraine']
+                    });
 
                     if (states_ukr.length) {
                         document.getElementById('pd').innerHTML = `<h3>${states_ukr[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
@@ -127,6 +143,8 @@
 
             function showRightHeader(layer) {
                 switch (layer) {
+                    case 'common':
+                        return 'Сводная информация'
                     case 'abitur':
                         return 'Абитуриенты НИУ ВШЭ Москва в 2022 году'
                     case 'stud':
@@ -151,6 +169,7 @@
             }
 
             function showHideLayer(event, newLayer, hideActiveLayer) {
+                document.getElementById('legend-inside').innerHTML = showLegend(newLayer);
                 document.getElementById('hd').innerHTML = `<h2>${showRightHeader(newLayer)}</h2>`;
                 if (newLayer == hideActiveLayer) {
                     return ; }
@@ -162,6 +181,17 @@
             function showData(layer, states) {
                 let dataNumber;
                 switch (layer) {
+                    case 'common':
+                        // const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
+                        // const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
+                        return `<h3>${states[0].properties.name_ru}</h3>
+                        <table>
+                            <tr><td class ="cell"><i>Количество абитуриентов в 2022 году: </i></td><td><b>${states[0].properties.abitur}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Количество зачисленных в 2022 году: </i></td><td><b>${states[0].properties.stud}</b> чел.</td></tr></table>`
+                        //     <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
+                        //     <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
+                        //     <tr><td class ="cell"><i>Партнерские организации УОО: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
+                        // </table>`
                     case 'abitur':
                         return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`;
                     case 'stud':
@@ -223,8 +253,137 @@
                 }
             }
 
+            function turnOnOffEvent(eventLayer) {
+                const visibility = map.getLayoutProperty(
+                    eventLayer,
+                    'visibility'
+                );
+
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(eventLayer, 'visibility', 'none');
+                }
+                else {
+                    map.setLayoutProperty(eventLayer, 'visibility', 'visible');
+                }
+            }
+            
+            function showLegend(layer) {
+                switch (layer) {
+                    case 'abitur':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#b0e0e6;'></span>1</li>
+                        <li><span style='background:#0000ff'></span>500</li>
+                        <li><span style='background:#00008b'></span>7492</li>
+                        </ul>`
+                    case 'stud':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#b4df5d;'></span>0</li>
+                        <li><span style='background:#008000'></span>160</li>
+                        <li><span style='background:#006400'></span>3617</li>
+                        </ul>`
+                    case 'ratio':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#ffff00'></span>0.01%</li>
+                        <li><span style='background:#99cc00'></span>0.15%</li>
+                        <li><span style='background:#669900'></span>0.40%</li>
+                        <li><span style='background:#006600'></span>1.43%</li>
+                        </ul>`
+                    case 'population':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#ccffff;'></span>41 тыс</li>
+                        <li><span class='leg-population'></span></li>
+                        <li><span style='background:#6600ff'></span>13 млн</li>
+                        </ul>`
+                    case 'income':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#ffd700;'></span>18 139</li>
+                        <li><span class='leg-income'></span></li>
+                        <li><span style='background:#dc143c'></span>99 905</li>
+                        </ul>`
+                    case 'social':
+                        return `<ul class='legend-labels'>
+                        <li><span style='background:#fed943'></span>1</li>
+                        <li><span class='leg-social'></span></li>
+                        <li><span style='background:#669900'></span>11</li>
+                        </ul>`
+                    default:
+                        return `<br>`
+                }
+            }
+
             </script>
 
+        </div>
+
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Источники данных</h2>
+                <a class="close" href="#">&times;</a>
+                <div class="content">
+                    <table >
+                        <tr>
+                          <th>Раздел</th>
+                          <th>Ссылка на источник</th>
+                        </tr>
+                        <tr>
+                          <td>Абитуриенты</td>
+                          <td rowspan="2">Данные предоставлены Приемной комиссией НИУ ВШЭ</td>
+                        </tr>
+                        <tr>
+                          <td>Зачисление</td>
+                          <!-- <td>94</td> -->
+                        </tr>
+                        <tr>
+                          <td>Процентное соотношение</td>
+                          <td>Посчитано на основе данных от Приемной комиссии НИУ ВШЭ и открытых источников: <a href="https://rosstat.gov.ru/folder/11110/document/13284" target="_blank">Численность населения Российской Федерации по полу и возрасту</a>
+                            <i>(дата обращения 01.02.2023г.)</i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Численность населения</td>
+                            <td>
+                                <a href="https://rosstat.gov.ru/" target="_blank">Федеральная служба
+                                    государственной статистики,</a> раздел
+                                <a href="https://rosstat.gov.ru/folder/12781" target="_blank">Демография,</a> файл
+                                <a href="https://rosstat.gov.ru/storage/mediabank/chisl_RF_01-01-2022_VPN-2020.xls" target="_blank">"Численность населения Российской Федерации по полу на 1 января 2022 года (с учётом итогов Всероссийской переписи населения 2020 г.)"</a>
+                                <i>(дата обращения 01.02.2023г.)</i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ср. доход населения</td>
+                            <td>
+                                <a href="https://rosstat.gov.ru/" target="_blank">Федеральная служба
+                                    государственной статистики,</a> раздел
+                                <a href="https://rosstat.gov.ru/folder/13397" target="_blank">Уровень жизни,</a> файл
+                                <a href="https://rosstat.gov.ru/storage/mediabank/Urov_10subg-nm.xlsx" target="_blank">"Среднедушевые денежные доходы населения по субъектам Российской Федерации"</a>
+                                <i>(дата обращения 01.02.2023г.)</i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Социальный лифт</td>
+                            <td>Данные предоставлены Приемной комиссией НИУ ВШЭ</td>
+                        </tr>
+                        <tr>
+                            <td>Партнерские организации УОО</td>
+                            <td rowspan="3">Данные предоставлены <a href="https://www.hse.ru/secondary/">Центром взаимодействия с регионами</a> <i>(от 01.02.2023г.)</i></td>
+                        </tr>
+                        <tr>
+                            <td>Соглашения</td>
+                        </tr>
+                        <tr>
+                            <td>Выезды</td>
+                        </tr>
+                        <tr>
+                            <td>Фед. университеты</td>
+                            <td>
+                                <a href="https://clck.ru/33iw5r" target="_blank">Список существующих федеральных университетов</a>
+                                <i>(дата обращения 01.02.2023г.)</i>
+                            </td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
         </div>
 
     </body>
