@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="utf-8" />
+        <title>Demo!</title>
+        <link rel="icon" type="image/x-icon" href="./01_Logo_HSE_full_rus_CMYK.svg">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+        <link
+        href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+        rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style_1.css" type="text/css">
+    </head>
+    <body>
+
+        <div class="navbar"> <!-- Верхняя панель меню -->
+            <!-- <div class="dropdown-1"> Общий вид
+                <button class="dropbtn-1">
+                    <a href="#" class="tablinks" onclick="openCity(event, 'common')" id="defaultOpen">Общий вид</a>
+                </button>
+            </div> -->
+            <div class="dropdown"> <!-- Поступление -->
+                <button class="dropbtn">Поступление 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="showLayer(event, 'abitur')">Абитуриенты</a>
+                <a href="#" class="tablinks" onclick="showLayer(event, 'stud')">Зачисленные</a>
+                <!-- <a href="#" class="tablinks" onclick="openCity(event, 'ratio')">Процентное соотношение</a> -->
+                <!-- <a href="#" class="tablinks" onclick="openCity(event, 'test')">Тест</a> -->
+                </div>
+            </div>
+            <!-- <div class="dropdown"> Демография и уровень жизни
+                <button class="dropbtn">Демография и уровень жизни
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'population')">Численность населения</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'income')">Ср. доход населения</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'social')">Социальный лифт</a>
+                </div>
+            </div>
+            <div class="dropdown"> Центр взаимодействия с регионами
+                <button class="dropbtn">Центр взаимодействия с регионами 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'school')">Партнерские организации УОО</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'agree')">Соглашения</a>
+                <a href="#" class="tablinks" onclick="openCity(event, 'event')">Выезды</a>
+                </div>
+            </div> 
+            <div class="dropdown"> Другое
+                <button class="dropbtn">Другое 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#" class="tablinks" onclick="openCity(event, 'federal')">Фед. университет</a>
+                </div>
+            </div>  -->
+        </div>
+
+        <script>
+            const color2023 = 'rgba(0, 0, 255, 1)';
+            const color2022 = 'rgba(255, 0, 0, 1)';
+
+            // const listLayers = ['abitur', 'stud', 'income'];
+            let activeLayer = 'abitur';
+
+        </script>
+
+        <div id="abitur" class="tabcontent"> 
+            <div id="map" class ="view"></div>
+            <div class="map-overlay" id="features">
+                <!-- <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+                <nav id='menu-abi' class="menu"></nav><hr width="94%"/> -->
+                <h2>Абитуриенты НИУ ВШЭ Москва в 2022 году</h2>
+                <div id="pd"><p>Наведите курсор на регион</p></div>
+            </div>
+            <!-- <div class="leg-overlay">
+                <div>
+                <table >
+                    <tr><td colspan="4"><div class="leg-abitur"></div></td></tr>
+                    <tr><td>1</td><td><div class="text-in">200</div></td><td><div class="text-in">500</div></td><td><div class="text-in">7492</div></td></tr>
+                  </table>
+            </div>
+        </div> -->
+            <script>
+            
+            // define access token
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+            
+            // create map
+            const map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: 'mapbox://styles/boriksu/cldkcs08c001t01o4swsjsk67', // map style URL from Mapbox Studio - test1  
+                zoom: 3.79,
+                center: [57.568, 58.379],  
+            });
+            
+            map.on('load', () => {
+                // make a pointer cursor
+                map.getCanvas().style.cursor = 'default';
+                console.log('check1')
+
+                // deactivate all layers initialy
+                // for (const layer of listLayers) {
+                //     console.log("check initial")
+                //     const visibility = map.getLayoutProperty(
+                //         layer,
+                //         'visibility'
+                //     );
+
+                //     map.setLayoutProperty(
+                //         layer,
+                //         'visibility',
+                //         'none'
+                //     );
+                // }
+
+                // default layer is abitur
+                map.moveLayer(activeLayer);
+
+            //     map.loadImage('icons/maps-and-flags.png', (error, image) => {
+            //         if (error) throw error;
+            //             map.addImage('store-icon', image, { 'sdf': true });
+            //     map.addSource('event2022', {
+            //         type: 'vector',
+            //         url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+            //     });
+            //     map.addLayer({
+            //         'id': 'event2022',
+            //         'type': 'symbol',
+            //         'source': 'event2022',
+            //         'layout': {
+            //             // Make the layer visible by default.
+            //             'visibility': 'none',
+            //             'icon-image': 'store-icon',
+            //             'icon-size': 0.3
+            //         },
+            //         'paint': {
+            //                     'icon-color': color2022 },
+            //         'source-layer': 'event2022'
+            //     });
+            //     map.addSource('event2023', {
+            //         type: 'vector',
+            //         url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+            //     });
+            //     map.addLayer({
+            //         'id': 'event2023',
+            //         'type': 'symbol',
+            //         'source': 'event2023',
+            //         'layout': {
+            //             // Make the layer visible by default.
+            //             'visibility': 'none',
+            //             'icon-image': 'store-icon',
+            //             'icon-size': 0.3
+            //         },
+            //         'paint': {
+            //                     'icon-color': color2023 },
+            //         'source-layer': 'event2023'
+            //     });
+            // });
+                map.on('idle', () => {
+                    // If these two layers were not added to the map, abort
+                //     if (!map.getLayer('event2023') || !map.getLayer('event2022')) {
+                //         // console.log('inside if abitur');
+                //         // console.log('hello-a', map.getLayer('event2023'), map.getLayer('event2022'));
+                //         return;
+                //     }
+
+                //     // Enumerate ids of the layers.
+                //     const toggleableLayerIds = ['event2022','event2023'];
+
+                //     // Set up the corresponding toggle button for each layer.
+                //     for (const id of toggleableLayerIds) {
+                //         // Skip layers that already have a button set up.
+                //         if (document.getElementById(id)) {
+                //             // console.log('check add abitur', id);
+                //             continue;
+                //         }
+
+                //         // Create a link.
+                //         const link = document.createElement('a');
+                //         link.id = id;
+                //         link.href = '#';
+                //         link.textContent = id == 'event2022' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+                //         link.className = '';
+
+                //         // Show or hide layer when the toggle is clicked.
+                //         link.onclick = function (e) {
+                //             const clickedLayer = this.id;
+                //             e.preventDefault();
+                //             e.stopPropagation();
+
+                //             const visibility = map.getLayoutProperty(
+                //                 clickedLayer,
+                //                 'visibility'
+                //             );
+
+                //             // Toggle layer visibility by changing the layout object's visibility property.
+                //             if (visibility === 'visible') {
+                //                 map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                //                 this.className = '';
+                //             } else {
+                //                 this.className = 'active';
+                //                 map.setLayoutProperty(
+                //                     clickedLayer,
+                //                     'visibility',
+                //                     'visible'
+                //                 );
+                //             }
+                //         };
+
+                //         const layers = document.getElementById('menu-abi');
+                //         layers.appendChild(link);
+                //         // console.log('add button abitur');
+                //     }
+                // });
+
+                // change info window on hover
+                    map.on('mousemove', (event) => {
+                    const states = map.queryRenderedFeatures(event.point, {
+                        layers: [activeLayer]
+                    });
+                    const states_ukr = map.queryRenderedFeatures(event.point, {
+                            layers: ['additional-reg-ukraine']
+                        });
+
+                    if (states_ukr.length) {
+                        document.getElementById('pd').innerHTML = `<h3>${states_ukr[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+                    }
+                    else if (states.length) {
+                        document.getElementById('pd').innerHTML = showData(activeLayer, states);
+                    }
+                    else {
+                        document.getElementById('pd').innerHTML = `<p>Наведите курсор на регион</p>`; 
+                    }
+                    });
+                });
+            });
+
+            </script>
+
+        </div>
+        // <!-- <div id="stud" class="tabcontent"> -->
+        //     <!-- <div id="check" class ="view"></div>
+        //     <div class="map-overlay">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-c' class="menu"></nav><hr width="94%"/>    
+        //     <h2>Зачисленные студенты НИУ ВШЭ Москва в 2022 году</h2>
+        //     <div id="pds"><p>Наведите курсор на регион</p></div>
+        //     </div> -->
+        //     <!-- <div class="leg-overlay"> -->
+        //         <!-- <div>
+        //         <table >
+        //             <tr><td colspan="4"><div class="leg-stud"></div></td></tr>
+        //             <tr><td>0</td><td><div class="text-in">100</div></td><td><div class="text-in">200</div></td><td><div class="text-in">3617</div></td></tr>
+        //           </table> -->
+        //     <!-- </div></div>
+
+        //     <script>
+
+        //     const map_c = new mapboxgl.Map({
+        //         container: 'check', // container id
+        //         style: 'mapbox://styles/boriksu/cldn9yvh6007701p62e5f509n', // map style URL from Mapbox Studio - test2
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_c.on('load', () => {
+        //         // make a pointer cursor
+        //         map_c.getCanvas().style.cursor = 'default';
+
+        //         map_c.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_c.addImage('store-icon', image, { 'sdf': true });
+        //             map_c.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_c.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_c.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_c.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_c.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_c.getLayer('event2023') || !map_c.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-c','event2023-c'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-c' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-c' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_c.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_c.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_c.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-c');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });    
+
+        //         // change info window on hover
+        //         map_c.on('mousemove', (event) => {
+        //         const states_c = map_c.queryRenderedFeatures(event.point, {
+        //             layers: ['stud']
+        //         });
+        //         const states_co_reg_s = map_c.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_s.length) {
+        //             document.getElementById('pds').innerHTML = `<h3>${states_co_reg_s[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else {
+
+        //         document.getElementById('pds').innerHTML = states_c.length
+        //             ? `<h3>${states_c[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states_c[0].properties.stud}</strong></em></p>`
+        //             : `<p>Наведите курсор на регион</p>`;
+        //         }
+        //         });
+        //     });
+
+        //     </script> -->
+        // <!-- </div> -->
+        // <!-- <div id="ratio" class="tabcontent">
+        //     <div id="check_r" class ="view"></div>
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-r' class="menu"></nav><hr width="94%"/> 
+        //     <h2>Процент абитуриентов НИУ ВШЭ Москва от населения региона </br>в возрасте 15-19 лет на 2022 год</h2>
+        //     <div id="pdr"><p>Наведите курсор на регион</p></div>
+        //     </div>
+        //     <div class="leg-overlay">
+        //         <div>
+        //         <table >
+        //             <tr><td colspan="4"><div class="leg-ratio"></div></td></tr>
+        //             <tr><td>1</td><td><div class="text-in">15</div></td><td><div class="text-in">40</div></td><td><div class="text-in">143</div></td></tr>
+        //           </table>
+        //     </div></div>
+            
+        //     <script>
+
+        //     const map_r = new mapboxgl.Map({
+        //         container: 'check_r', // container id
+        //         style: 'mapbox://styles/boriksu/cle4dz7jo001i01qmxj7xm045', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_r.on('load', () => {
+        //         // make a pointer cursor
+        //         map_r.getCanvas().style.cursor = 'default';
+
+        //         map_r.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_r.addImage('store-icon', image, { 'sdf': true });
+        //             map_r.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_r.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_r.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_r.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_r.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_r.getLayer('event2023') || !map_r.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-r','event2023-r'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-r' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-r' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_r.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_r.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_r.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-r');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // change info window on hover
+        //         map_r.on('mousemove', (event) => {
+        //         const states_r = map_r.queryRenderedFeatures(event.point, {
+        //             layers: ['ratio']
+        //         });
+        //         const states_co_reg_r = map_r.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_r.length) {
+        //             document.getElementById('pdr').innerHTML = `<h3>${states_co_reg_r[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_r.length) {
+        //             const ru = new Intl.NumberFormat("en", {style: "percent", minimumFractionDigits: 4}).format((states_r[0].properties.ratio_abitur)/10000);
+        //             // const ru = states_r[0].properties.ratio_abitur;
+        //             document.getElementById('pdr').innerHTML = `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`;
+        //         }
+        //         else {
+        //             document.getElementById('pdr').innerHTML =`<p>Наведите курсор на регион</p>`;
+        //         }
+
+        //         // document.getElementById('pdr').innerHTML = states_r.length
+        //         //     ? `<h3>${states_r[0].properties.name_ru}</h3><p><em>Показатель : <strong>${ru}</strong></em></p>`
+        //         //     : `<p>Наведите курсор на регион</p>`;
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="income" class="tabcontent">
+        //     <div id="check_i" class ="view"></div>
+        //     <div class="map-overlay">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-i' class="menu"></nav><hr width="94%"/>        
+        //     <h2>Среднедушевые денежные доходы населения<br>по субъектам Российской федерации за 2021 год</h2>
+        //     <div id="pdi"><p>Наведите курсор на регион</p></div>
+        //     </div>
+        //     <div class="leg-overlay">
+        //         <div>
+        //         <table >
+        //             <tr><td colspan="2"><div class="leg-income"></div></td></tr>
+        //             <tr><td style="font-size: 75%;">18 тыс</td><td><div class="text-in" style="font-size: 75%;">99 тыс</div></td></tr>
+        //           </table>
+        //     </div></div>
+
+        //     <script>
+
+        //     const map_i = new mapboxgl.Map({
+        //         container: 'check_i', // container id
+        //         style: 'mapbox://styles/boriksu/cldstcajh000w01ta3su6zf44', // map style URL from Mapbox Studio - test2 
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379], 
+        //     });
+            
+        //     map_i.on('load', () => {
+        //         // make a pointer cursor
+        //         map_i.getCanvas().style.cursor = 'default';
+
+        //         map_i.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_i.addImage('store-icon', image, { 'sdf': true });
+        //             map_i.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_i.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_i.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_i.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_i.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_i.getLayer('event2023') || !map_i.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-i','event2023-i'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-i' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-i' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_i.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_i.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_i.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-i');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // change info window on hover
+        //         map_i.on('mousemove', (event) => {
+        //         const states_i = map_i.queryRenderedFeatures(event.point, {
+        //             layers: ['income']
+        //         });
+        //         const states_co_reg_i = map_i.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_i.length) {
+        //             document.getElementById('pdi').innerHTML = `<h3>${states_co_reg_i[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_i.length) {
+        //             const ru = new Intl.NumberFormat("ru").format(states_i[0].properties.income);
+        //             document.getElementById('pdi').innerHTML = `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`;
+        //         }
+        //         else {
+        //             document.getElementById('pdi').innerHTML = `<p>Наведите курсор на регион</p>`;
+        //         }
+        //         // document.getElementById('pdi').innerHTML = states_i.length
+        //         //     ? `<h3>${states_i[0].properties.name_ru}</h3><p><em><strong>${ru}</strong> руб./месяц</em></p>`
+        //         //     : `<p>Наведите курсор на регион</p>`;
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="population" class="tabcontent">
+        //     <div id="check_p" class ="view"></div>            
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-p' class="menu"></nav><hr width="94%"/>        
+        //     <h2>Численность населения на 1 января 2022 года</h2>
+        //     <div id="pdp"><p>Наведите курсор на регион</p></div>
+        //     </div>
+        //     <div class="leg-overlay">
+        //         <div>
+        //         <table >
+        //             <tr><td colspan="2"><div class="leg-population"></div></td></tr>
+        //             <tr><td style="font-size: 75%;">41 тыс</td><td><div class="text-in" style="font-size: 75%;">13 млн</div></td></tr>
+        //           </table>
+        //     </div></div>
+
+        //     <script>
+        //     const map_p = new mapboxgl.Map({
+        //         container: 'check_p', // container id
+        //         style: 'mapbox://styles/boriksu/cle4b07n8000e01oejisy6ojc', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_p.on('load', () => {
+        //         // make a pointer cursor
+        //         map_p.getCanvas().style.cursor = 'default';
+
+        //         map_p.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_p.addImage('store-icon', image, { 'sdf': true });
+        //             map_p.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_p.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_p.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_p.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_p.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_p.getLayer('event2023') || !map_p.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-p','event2023-p'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-p' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-p' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_p.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_p.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_p.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-p');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // change info window on hover
+        //         map_p.on('mousemove', (event) => {
+        //         const states_p = map_p.queryRenderedFeatures(event.point, {
+        //             layers: ['population']
+        //         });
+        //         const states_co_reg_p = map_p.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_p.length) {
+        //             document.getElementById('pdp').innerHTML = `<h3>${states_co_reg_p[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_p.length) {
+        //             const ru_all = new Intl.NumberFormat("ru").format(states_p[0].properties.population);
+        //             const ru = new Intl.NumberFormat("ru").format(states_p[0].properties.teen);
+        //             document.getElementById('pdp').innerHTML = `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`;
+        //         }
+        //         else {
+        //             document.getElementById('pdp').innerHTML = `<p>Наведите курсор на регион</p>`;
+        //         }
+
+        //         // document.getElementById('pdp').innerHTML = states_p.length
+        //         //     ? `<h3>${states_p[0].properties.name_ru}</h3><p><em><strong>${ru_all}</strong> человек, из них <strong>${ru}</strong> в возрасте 15-19 лет</em></p>`
+        //         //     : `<p>Наведите курсор на регион</p>`;
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="social" class="tabcontent">
+        //     <div id="check_so" class ="view"></div>            
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-so' class="menu"></nav><hr width="94%"/>   
+        //     <h2>Зачисленные по льготе "Социальный лифт" в 2022 году</h2>
+        //     <div id="pdso"><p>Наведите курсор на регион</p></div>
+        //     </div>
+        //     <div class="leg-overlay">
+        //         <div>
+        //         <table >
+        //             <tr><td colspan="2"><div class="leg-social"></div></td></tr>
+        //             <tr><td style="font-size: 75%;">1</td><td><div class="text-in" style="font-size: 75%;">11</div></td></tr>
+        //           </table>
+        //     </div></div>
+
+
+        //     <script>
+
+        //     const map_so = new mapboxgl.Map({
+        //         container: 'check_so', // container id
+        //         style: 'mapbox://styles/boriksu/cle4b7oi4005w01ogbbo2bimb', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_so.on('load', () => {
+        //         // make a pointer cursor
+        //         map_so.getCanvas().style.cursor = 'default';
+
+        //         map_so.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_so.addImage('store-icon', image, { 'sdf': true });
+        //             map_so.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_so.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_so.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_so.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_so.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_so.getLayer('event2023') || !map_so.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-so','event2023-so'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-so' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-so' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_so.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_so.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_so.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-so');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });    
+
+        //         // change info window on hover
+        //         map_so.on('mousemove', (event) => {
+        //         const states_so = map_so.queryRenderedFeatures(event.point, {
+        //             layers: ['social']
+        //         });
+        //         const states_co_reg_so = map_so.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_so.length) {
+        //             document.getElementById('pdso').innerHTML = `<h3>${states_co_reg_so[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_so.length) {
+        //             if (states_so[0].properties.social_lift_total == 0) {
+        //                 document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p><em>Из данного региона нет зачисленных по льготе "Социальный лифт"</em></p>`
+        //             } else {
+        //                 document.getElementById('pdso').innerHTML = `<h3>${states_so[0].properties.name_ru}</h3><p>Количество зачисленных по льготе "Социальный лифт" : <strong>${states_so[0].properties.social_lift_total}</strong> , в том числе<br>
+        //                 <em>в рамках основного конкурса : <strong>${states_so[0].properties.social_lift}</strong></em><br>
+        //                 <em>в рамках конкурса на категорию "Дети ветеранов боевых действий" : <strong>${states_so[0].properties.social_lift_veteran}</strong></em></p>`
+        //             }
+        //         } else {
+        //             document.getElementById('pdso').innerHTML = `<p>Наведите курсор на регион</p>`
+        //         }
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="school" class="tabcontent">
+        //     <div id="check_s" class ="view"></div>
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-s' class="menu"></nav><hr width="94%"/>        
+        //     <h2>Соглашения НИУ ВШЭ со школами на 01.02.2023г.</h2>
+        //     <div id="pdh"><p>Наведите курсор на регион</p></div>
+        //     </div>
+
+        //     <script>
+
+        //     const map_s = new mapboxgl.Map({
+        //         container: 'check_s', // container id
+        //         style: 'mapbox://styles/boriksu/cldstd82f002401pbltje4vmi', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_s.on('load', () => {
+        //         // make a pointer cursor
+        //         map_s.getCanvas().style.cursor = 'default';
+
+        //         map_s.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_s.addImage('store-icon', image, { 'sdf': true });
+        //             map_s.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_s.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_s.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_s.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_s.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_s.getLayer('event2023') || !map_s.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-s','event2023-s'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-s' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-s' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_s.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_s.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_s.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-s');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // change info window on hover
+        //         map_s.on('mousemove', (event) => {
+        //         const states_s = map_s.queryRenderedFeatures(event.point, {
+        //             layers: ['total_school']
+        //         });
+        //         const states_co_reg_h = map_s.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_h.length) {
+        //             document.getElementById('pdh').innerHTML = `<h3>${states_co_reg_h[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else {
+        //         document.getElementById('pdh').innerHTML = states_s.length
+        //             ? `<h3>${states_s[0].properties.name_ru}</h3><p><em>Базовые школы: <strong>${states_s[0].properties.base_school}</strong></em></br>
+        //             <em>Школы-партнеры: <strong>${states_s[0].properties.school_partner}</strong></em></br>
+        //             <em> Школы распределенного лицея: <strong>${states_s[0].properties.licey}</strong></em></p>`
+        //             : `<p>Наведите курсор на регион</p>`;
+        //         }
+        //         // console.log(states_s[0].properties);
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="agree" class="tabcontent">
+        //     <div id="check_a" class ="view"></div>
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-a' class="menu"></nav><hr width="94%"/>        
+        //     <h2>Соглашение о взаимодействии с органом управления региона на 01.02.2023г.</h2>
+        //     <div id="pda"><p>Наведите курсор на регион</p></div>
+        //     </div>
+
+        //     <script>
+        //     const map_a = new mapboxgl.Map({
+        //         container: 'check_a', // container id
+        //         style: 'mapbox://styles/boriksu/cldtyiq2200cd01t99mmzv8if', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_a.on('load', () => {
+        //         // make a pointer cursor
+        //         map_a.getCanvas().style.cursor = 'default';
+
+        //         map_a.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_a.addImage('store-icon', image, { 'sdf': true });
+        //             map_a.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_a.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_a.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_a.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+        //     map_a.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_a.getLayer('event2023') || !map_a.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-a','event2023-a'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-a' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-a' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_a.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_a.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_a.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-a');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // change info window on hover
+        //         map_a.on('mousemove', (event) => {
+        //         const states_a = map_a.queryRenderedFeatures(event.point, {
+        //             layers: ['agreement2']
+        //         });
+        //         const states_co_reg_ag = map_a.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_ag.length) {
+        //             document.getElementById('pda').innerHTML = `<h3>${states_co_reg_ag[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_a.length) {
+        //             if (states_a[0].properties.agreement_1 == 0) {
+        //                 document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение не установлено</em></p>`
+        //             } else {
+        //                 document.getElementById('pda').innerHTML = `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с: <strong>${states_a[0].properties.agreement}</strong></em></p>`
+        //             }
+        //         } else {
+        //             document.getElementById('pda').innerHTML = `<p>Наведите курсор на регион</p>`
+        //         }
+        //         // document.getElementById('pda').innerHTML = states_a.length
+        //         //     ? `<h3>${states_a[0].properties.name_ru}</h3><p><em>Соглашение с : <strong>${states_a[0].properties.agreement}</strong></em></p>`
+        //         //     : `<p>Наведите курсор на регион</p>`;
+        //         // console.log(states_s[0].properties);
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="federal" class="tabcontent">
+        //     <div id="check_f" class ="view"></div>
+        //     <div class="map-overlay" id="features">
+        //     <h2>Наличие федерального университета в регионе</h2>
+        //     <div id="pdf"><p>Наведите курсор на регион</p></div>
+        //     </div>
+
+        //     <script>
+        //     const map_f = new mapboxgl.Map({
+        //         container: 'check_f', // container id
+        //         style: 'mapbox://styles/boriksu/cldsw0ujt001401n2mwqrd7lo', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_f.on('load', () => {
+        //         // make a pointer cursor
+        //         map_f.getCanvas().style.cursor = 'default';
+
+        //         // change info window on hover
+        //         map_f.on('mousemove', (event) => {
+        //         const states_f = map_f.queryRenderedFeatures(event.point, {
+        //             layers: ['federal']
+        //         });
+        //         const states_co_reg_f = map_f.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_f.length) {
+        //             document.getElementById('pdf').innerHTML = `<h3>${states_co_reg_f[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_f.length) {
+        //             if (states_f[0].properties.federal == "") {
+        //                 document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>В регионе нет федерального университета</em></p>`
+        //             } else {
+        //                 document.getElementById('pdf').innerHTML = `<h3>${states_f[0].properties.name_ru}</h3><p><em>${states_f[0].properties.federal}</em></p>`
+        //             }
+        //         } else {
+        //             document.getElementById('pdf').innerHTML = `<p>Наведите курсор на регион</p>`
+        //         }
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div>
+        // <div id="event" class="tabcontent">
+        //     <div id="check_e" class ="view"></div>            
+        //     <div class="map-overlay" id="features">
+        //     <h2>Выезды и мероприятия Центра по взаимодействию с регионами</h2>
+        //     <div id="pde"><p>Наведите курсор на регион</p></div>
+        //     </div>
+
+        //     <script>
+        //     const map_e = new mapboxgl.Map({
+        //         container: 'check_e', // container id
+        //         style: 'mapbox://styles/boriksu/cldu4ypmu003501mh959fv1m3', // map style URL from Mapbox Studio - test2  
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],
+        //     });
+            
+        //     map_e.on('load', () => {
+        //         // make a pointer cursor
+        //         map_e.getCanvas().style.cursor = 'default';
+
+        //         // change info window on hover
+        //         map_e.on('mousemove', (event) => {
+        //         const states_e = map_e.queryRenderedFeatures(event.point, {
+        //             layers: ['event']
+        //         });
+
+        //         const states_e_c = map_e.queryRenderedFeatures(event.point, {
+        //             layers: ['eventcopy']
+        //         });
+        //         const states_co_reg_e = map_e.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //         if (states_co_reg_e.length) {
+        //             document.getElementById('pde').innerHTML = `<h3>${states_co_reg_e[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //         }
+        //         else if (states_e_c.length) {
+        //             let text = "";
+        //             if (states_e_c[0].properties.event2022_1 == '1') {
+        //                 let lines = states_e_c[0].properties.event2022.split('?');
+        //                 for (let i = 0; i < lines.length; i++) {
+        //                     let words = lines[i].split(';');
+        //                     text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+        //                 }
+        //             }
+        //             if (states_e_c[0].properties.event2023_1 == '1') {
+        //                 let lines = states_e_c[0].properties.event2023.split('?');
+        //                 for (let i = 0; i < lines.length; i++) {
+        //                     let words = lines[i].split(';');
+        //                     text += words[0] + ", " + words[1] + ", " + words[2] + "<br>"
+        //                 }
+        //             }
+        //             if (text == "") {
+        //                 text += "<p><em>Мероприятия не проводились</em></p>"
+        //             }
+        //             document.getElementById('pde').innerHTML = `<h3>${states_e_c[0].properties.name_ru}</h3><p>${text}</p>`
+        //         }
+                
+        //         // if (states_e.length) {
+        //         //     if (states_e[0].properties.event_1== '0') {
+        //         //         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>Мероприятия не проводились</em></p>`
+        //         //     } else {
+        //         //         // console.log(states_e[0].properties.event.split(','));
+        //         //         let text = "";
+        //         //         let lines = states_e[0].properties.event.split(',');
+        //         //         // console.log(lines[0].slice(3, lines[0].length-1)); // регион
+        //         //         // console.log(lines[1].slice(1, lines[1].length-1));  // цифра
+        //         //         // console.log(lines[2].slice(1, lines[2].length-1));
+        //         //         text += lines[2].slice(1, lines[2].length-1) + ", " + lines[3].slice(1, lines[3].length-1) + ", " + lines[4].slice(1, lines[4].length-1);
+        //         //         // console.log(lines[3].slice(1, lines[3].length-1));
+        //         //         // console.log(lines[4].slice(1, lines[4].length-1));
+        //         //         // console.log(lines[5].slice(1, lines[5].length-3));  // ответственный
+        //         //         if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+        //         //             text += ' 2023'
+        //         //         }
+        //         //         if (lines.length > 6) {
+        //         //             text += "<br>" + lines[8].slice(1, lines[8].length-1) + ", " + lines[9].slice(1, lines[9].length-1) + ", " + lines[10].slice(1, lines[10].length-1);
+                        
+        //         //         if (text.at(-1) != '2' && text.at(-1) != '1' && text.at(-1) != '0' && text.at(-1) != '3') {
+        //         //             text += ' 2023'
+        //         //         }}
+
+        //         //         document.getElementById('pde').innerHTML = `<h3>${states_e[0].properties.name_ru}</h3><p><em>${text}</em></p>`
+        //         //     }
+        //         // } else {
+        //         //     document.getElementById('pde').innerHTML = `<p>Наведите курсор на регион</p>`
+        //         // }
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div> -->
+        // <!-- <div id="test" class="tabcontent">
+        //     <h3>Paris</h3>
+        //     <p>Paris is the capital of France.</p>
+        //     <img src="images.jpeg" />
+        // </div> -->
+        // <!-- <div id="common" class="tabcontent">
+        //     <div id="check_co" class ="view"></div>
+        //     <div class="map-overlay" id="features">
+        //     <p><b>Выезды Центра взаимодействия с регионами</b><br>Нажмите для отображения</p>
+        //     <nav id='menu-co' class="menu"></nav><hr width="94%"/>
+        //     <h2>Общая информация</h2>
+        //     <div id="pd_co"><p>Наведите курсор на регион</p></div>
+        //     </div>
+
+        //     <script>
+        //     // define access token
+        //     mapboxgl.accessToken = 'pk.eyJ1IjoiYm9yaWtzdSIsImEiOiJjbGRlanFjaWcwZTZxM25vNnFrbHBjbzk4In0.QO9lS1QlWM51h2a8CLBU-Q';
+
+        //     // create map
+        //     const map_co = new mapboxgl.Map({
+        //         container: 'check_co', // container id
+        //         style: 'mapbox://styles/boriksu/cle5qsgtn003r01kbyouvx91d', // map style URL from Mapbox Studio - test1 
+        //         zoom: 3.79,
+        //         center: [57.568, 58.379],   
+        //     });
+            
+        //     map_co.on('load', () => {
+        //         // make a pointer cursor
+        //         map_co.getCanvas().style.cursor = 'default';
+
+        //         map_co.loadImage('icons/maps-and-flags.png', (error, image) => {
+        //             if (error) throw error;
+        //             map_co.addImage('store-icon', image, { 'sdf': true });
+        //             map_co.addSource('event2022', {
+        //                 type: 'vector',
+        //                 url: 'mapbox://boriksu.cledyc01c0s0k21lg8kbku0sw-02qf8'
+        //             });
+        //         map_co.addLayer({
+        //             'id': 'event2022',
+        //             'type': 'symbol',
+        //             'source': 'event2022',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2022 },
+        //             'source-layer': 'event2022'
+        //         });
+        //         map_co.addSource('event2023', {
+        //             type: 'vector',
+        //             url: 'mapbox://boriksu.cledzo1t20srj20lg5cxzgm8w-0akw4'
+        //         });
+        //         map_co.addLayer({
+        //             'id': 'event2023',
+        //             'type': 'symbol',
+        //             'source': 'event2023',
+        //             'layout': {
+        //                 // Make the layer visible by default.
+        //                 'visibility': 'none',
+        //                 'icon-image': 'store-icon',
+        //                 'icon-size': 0.3
+        //             },
+        //             'paint': {
+        //                         'icon-color': color2023 },
+        //             'source-layer': 'event2023'
+        //         });
+        //     });
+
+        //     map_co.on('idle', () => {
+        //             // If these two layers were not added to the map, abort
+        //             if (!map_co.getLayer('event2023') || !map_co.getLayer('event2022')) {
+        //                 // console.log('inside if');
+        //                 return;
+        //             }
+
+        //             // Enumerate ids of the layers.
+        //             const toggleableLayerIds = ['event2022-co','event2023-co'];
+
+        //             // Set up the corresponding toggle button for each layer.
+        //             for (const id of toggleableLayerIds) {
+        //                 // Skip layers that already have a button set up.
+        //                 if (document.getElementById(id)) {
+        //                     // console.log('check add', id);
+        //                     continue;
+        //                 }
+
+        //                 // Create a link.
+        //                 const link = document.createElement('a');
+        //                 link.id = id;
+        //                 link.href = '#';
+        //                 link.textContent = id == 'event2022-co' ? 'Выезды за 2020-2022 годы' : 'Выезды на 2023 год';
+        //                 link.className = '';
+
+        //                 // Show or hide layer when the toggle is clicked.
+        //                 link.onclick = function (e) {
+        //                     const clickedLayer = this.id == 'event2022-co' ? 'event2022' : 'event2023';
+        //                     e.preventDefault();
+        //                     e.stopPropagation();
+
+        //                     const visibility = map_co.getLayoutProperty(
+        //                         clickedLayer,
+        //                         'visibility'
+        //                     );
+
+        //                     // Toggle layer visibility by changing the layout object's visibility property.
+        //                     if (visibility === 'visible') {
+        //                         map_co.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //                         this.className = '';
+        //                     } else {
+        //                         this.className = 'active';
+        //                         map_co.setLayoutProperty(
+        //                             clickedLayer,
+        //                             'visibility',
+        //                             'visible'
+        //                         );
+        //                     }
+        //                 };
+
+        //                 const layers = document.getElementById('menu-co');
+        //                 layers.appendChild(link);
+        //                 // console.log('add button');
+        //             }
+        //         });
+
+        //         // // create legend
+        //         // const legend = document.getElementById('legend');
+
+        //         // change info window on hover
+        //         map_co.on('mousemove', (event) => {
+        //             const states_co_d = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['dem']
+        //             });
+        //             const states_co_a = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['abitur']
+        //             });
+        //             const states_co_s = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['stud']
+        //             });
+        //             const states_co_sc = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['school']
+        //             });
+        //             const states_co_e = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['event']
+        //             });
+        //             const states_co_reg = map_co.queryRenderedFeatures(event.point, {
+        //                 layers: ['additional-reg-ukraine']
+        //             });
+
+        //             if (states_co_reg.length) {
+        //                 document.getElementById('pd_co').innerHTML = `<h3>${states_co_reg[0].properties.name_ru}</h3><p><em>Территории, принятые в состав Российской Федерации 30.09.2022г.</em></p>`
+        //             }
+        //             else if (states_co_a.length) {
+        //                 const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
+        //                 const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
+        //                 // console.log(states_co_a[0].properties.name_ru)
+        //                 // console.log("hello")
+        //                 document.getElementById('pd_co').innerHTML = `<h3>${states_co_a[0].properties.name_ru}</h3>
+        //                 <table>
+        //                     <tr><td class ="cell"><i>Количество абитуриентов в 2022 году: </i></td><td><b>${states_co_a[0].properties.abitur}</b> чел.</td></tr>
+        //                     <tr><td class ="cell"><i>Количество зачисленных в 2022 году: </i></td><td><b>${states_co_s[0].properties.stud}</b> чел.</td></tr>
+        //                     <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
+        //                     <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
+        //                     <tr><td class ="cell"><i>Партнерские организации УОО: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
+        //                 </table>`
+        //             } else {
+        //                 document.getElementById('pd_co').innerHTML = `<p>Наведите курсор на регион</p>`
+        //             }
+        //         });
+        //     });
+
+        //     </script>
+
+        // </div> -->
+
+        <script> // switching between tabs
+
+        function showLayer(event, newlayer) {
+            map.moveLayer(newlayer);
+            activeLayer = newlayer
+        }
+
+        // function openCity(evt, cityName) {
+        //     var i, tabcontent, tablinks;
+        //     tabcontent = document.getElementsByClassName("tabcontent");
+        //     for (i = 0; i < tabcontent.length; i++) {
+        //         tabcontent[i].style.display = "none";
+        //     }
+        //     tablinks = document.getElementsByClassName("tablinks");
+        //     for (i = 0; i < tablinks.length; i++) {
+        //         tablinks[i].className = tablinks[i].className.replace(" active", "");
+        //     }
+        //     document.getElementById(cityName).style.display = "block";
+        //     evt.currentTarget.className += " active";
+        // }
+        // Get the element with id="defaultOpen" and click on it
+        // document.getElementById("abitur").style.display = "none";
+        // document.getElementById("stud").style.display = "none";
+        // document.getElementById("test").style.display = "none";
+        // document.getElementById("income").style.display = "none";
+
+        function showData(layer, states) {
+            switch (layer) {
+                case 'abitur':
+                    return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`;
+                case 'stud':
+                    return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество зачисленных: <strong>${states[0].properties.stud}</strong></em></p>`;
+            }
+        }
+
+
+        // document.getElementById("defaultOpen").click();
+
+        </script>
+
+    </body>
+</html>
