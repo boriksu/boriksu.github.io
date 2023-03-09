@@ -182,16 +182,16 @@
                 let dataNumber;
                 switch (layer) {
                     case 'common':
-                        // const ru = new Intl.NumberFormat("ru").format(states_co_d[0].properties.population);
-                        // const ru_i = new Intl.NumberFormat("ru").format(states_co_d[0].properties.income);
+                        const ru = new Intl.NumberFormat("ru").format(states[0].properties.population);
+                        const ru_i = new Intl.NumberFormat("ru").format(states[0].properties.income);
                         return `<h3>${states[0].properties.name_ru}</h3>
                         <table>
                             <tr><td class ="cell"><i>Количество абитуриентов в 2022 году: </i></td><td><b>${states[0].properties.abitur}</b> чел.</td></tr>
-                            <tr><td class ="cell"><i>Количество зачисленных в 2022 году: </i></td><td><b>${states[0].properties.stud}</b> чел.</td></tr></table>`
-                        //     <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
-                        //     <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
-                        //     <tr><td class ="cell"><i>Партнерские организации УОО: </i></td><td><b>${states_co_sc[0].properties.total_school}</b> </td></tr>
-                        // </table>`
+                            <tr><td class ="cell"><i>Количество зачисленных в 2022 году: </i></td><td><b>${states[0].properties.stud}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Численность населения: </i></td><td><b>${ru}</b> чел.</td></tr>
+                            <tr><td class ="cell"><i>Средний доход: </i></td><td><b>${ru_i}</b> руб./месяц</td></tr>
+                            <tr><td class ="cell"><i>Партнерские организации УОО: </i></td><td><b>${states[0].properties.total_school}</b> </td></tr>
+                        </table>`
                     case 'abitur':
                         return `<h3>${states[0].properties.name_ru}</h3><p><em>Количество абитуриентов: <strong>${states[0].properties.abitur}</strong></em></p>`;
                     case 'stud':
