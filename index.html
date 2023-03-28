@@ -70,8 +70,10 @@
             let activeLayer = 'common';
             let ev2023 = false;
             let ev2022 = false;
-            let selectedData = [['Cубъект РФ', 'Количество абитуриентов', 'Количество зачисленных', 'Население', 'Средний доход', 'Количество партнерских организаций УОО']]
+            let selectedData = [['Cубъект РФ', 'Количество абитуриентов НИУ ВШЭ Москва в 2022 году', 'Количество зачисленных НИУ ВШЭ Москва в 2022 году', 'Численность населения на 1 января 2022 года', 'Средний доход населения за 2022 год', 'Количество партнерских организаций УОО']]
             let selectedRegion = []
+            var wscols = [
+                {wch:20},{wch:20},{wch:20},{wch:20},{wch:20},{wch:20}];
 
         </script>
 
@@ -400,18 +402,23 @@
             document.getElementById("lengthSelectedRegion").innerHTML = 'Выбрано регионов: ' + selectedRegion.length; 
             function clickDownload () { 
                 selectedData.push(['']);
-                selectedData.push(['Дата и время формирования файла',new Date()]);
-
+                var d = new Date();
+                selectedData.push(['Дата формирования файла',d.toLocaleDateString()]);
+                selectedData.push(['Время формирования файла',d.toLocaleTimeString()]);
+                
                 // (C2) CREATE NEW EXCEL "FILE"
                 var workbook = XLSX.utils.book_new(),
                     worksheet = XLSX.utils.aoa_to_sheet(selectedData);
-                workbook.SheetNames.push("First");
-                workbook.Sheets["First"] = worksheet;
+                XLSX.utils.book_append_sheet(workbook, worksheet);
+
+                worksheet['!cols'] = wscols;
                 // (C3) "FORCE DOWNLOAD" XLSX FILE
                 XLSX.writeFile(workbook, "selectedRegions.xlsx");
 
                 selectedData.pop();
                 selectedData.pop();
+                selectedData.pop();
+
             };
 
             function clearDownload() {
